@@ -1,6 +1,6 @@
 const router = require("express").Router();
 let Team = require("../models/team.model");
-let mail = require("../nodemailer");
+let mail = require("../mailer");
 
 router.route("/").get((req, res) => {
   Team.find()
