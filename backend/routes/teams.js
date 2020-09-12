@@ -1,5 +1,6 @@
 const router = require("express").Router();
 let Team = require("../models/team.model");
+let mail = require("../nodemailer");
 
 router.route("/").get((req, res) => {
   Team.find()
@@ -22,6 +23,7 @@ router.route("/add").post((req, res) => {
 
   newTeam
     .save()
+    .then(mail(teamMembers))
     .then(() => res.json(req.body.teamMembers))
     .catch((err) => res.status(400).json("Error:" + err));
 });
