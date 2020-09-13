@@ -22,7 +22,7 @@ const userSchema = new Schema(
       type: String,
       required: true,
       unique: true,
-      minlength: 8,
+      minlength: 6,
     },
   },
   { timestamps: true }

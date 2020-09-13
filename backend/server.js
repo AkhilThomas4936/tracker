@@ -7,6 +7,7 @@ require("dotenv").config();
 const app = express();
 const port = process.env.PORT || 5000;
 
+//Init middlewares CORS and body parser
 app.use(cors());
 app.use(express.json());
 
@@ -23,9 +24,13 @@ connection.once("open", () => {
 
 const teamsRouter = require("./routes/teams");
 const usersRouter = require("./routes/users");
+const bugsRouter = require("./routes/bugs");
+const authRouter = require("./routes/auth");
 
-app.use("/team", teamsRouter);
+app.use("/teams", teamsRouter);
 app.use("/users", usersRouter);
+app.use("/bugs", bugsRouter);
+app.use("/auth", authRouter);
 
 app.get("/", (req, res) => {
   res.send("<h1>Hello from node express app</h1>");
