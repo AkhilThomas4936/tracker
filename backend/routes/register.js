@@ -4,16 +4,18 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { check, validationResult } = require("express-validator");
 
-router.route("/").get((req, res) => {
-  User.find()
-    .then((users) => res.json(users))
-    .catch((err) => {
-      res.status(400).json("Error:" + err);
-    });
-});
+// router.route("/").get((req, res) => {
+//   User.find()
+//     .then((users) => res.json(users))
+//     .catch((err) => {
+//       res.status(400).json("Error:" + err);
+//     });
+// });
+
+//Register User
 
 router.post(
-  "/add",
+  "/register",
   [
     check("username", "Username is required").not().isEmpty(),
     check("email", "Please include a valid email").isEmail(),

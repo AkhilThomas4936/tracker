@@ -9,6 +9,7 @@ module.exports = function (req, res, next) {
   }
 
   //Verify token
+
   const secretKey = process.env.JWT_SECRET;
   try {
     const decoded = jwt.verify(token, secretKey);

@@ -1,37 +1,51 @@
 const router = require("express").Router();
-let Bug = require("../models/bug.model");
+let Project = require("../models/projects.model");
 
-router.route("/").get((req, res) => {
-  Bug.find()
-    .then((bugs) => res.json(bugs))
-    .catch((err) => res.status(400).json("Error" + err));
+router.get("/", async (req, res) => {
+  let result = await Project.findOne({
+    projectName: req.body.projectName,
+  });
+  if (!result) {
+    return res.status(400).json({ errors: [{ msg: "Project not found" }] });
+  }
+  res.send(result.bugs);
 });
 
-router.route("/add").post((req, res) => {
-  const projectName = req.body.projectName;
+router.route("/add").post(async (req, res) => {
   const bugId = req.body.bugId;
+  const title = req.body.title;
   const status = req.body.status;
   const createdBy = req.body.createdBy;
   const expectedResult = req.body.expectedResult;
   const actualResult = req.body.actualResult;
   const assignedTo = req.body.assignedTo;
-  const date = Date.parse(req.body.date);
 
-  const newBug = new Bug({
-    projectName,
+  const newBug = {
     bugId,
+    title,
     status,
     createdBy,
     expectedResult,
     actualResult,
     assignedTo,
-    date,
-  });
+  };
+  console.log(newBug);
 
-  newBug
-    .save()
-    .then(() => res.json(req.body))
-    .catch((err) => res.status(400).json("Error:" + err));
+  try {
+    let isExists = await Project.findOne({ projectName: req.body.projectName });
+    if (!isExists) {
+      return res.status(400).json({ errors: [{ msg: "Invalid update" }] });
+    }
+    await Project.updateOne(
+      { projectName: req.body.projectName },
+      {
+        $push: { bugs: newBug },
+      }
+    );
+    res.send("Bug pushed successfully");
+  } catch (err) {
+    res.status(400).json("Error:" + err);
+  }
 });
 
 module.exports = router;

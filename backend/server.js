@@ -5,7 +5,7 @@ const mongoose = require("mongoose");
 require("dotenv").config();
 
 const app = express();
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 3000;
 
 //Init middlewares CORS and body parser
 app.use(cors());
@@ -22,15 +22,19 @@ connection.once("open", () => {
   console.log("Mongodb connection made successfully");
 });
 
-const teamsRouter = require("./routes/teams");
-const usersRouter = require("./routes/users");
+const projectsRouter = require("./routes/projects");
+const registerRouter = require("./routes/register");
 const bugsRouter = require("./routes/bugs");
 const authRouter = require("./routes/auth");
 
-app.use("/teams", teamsRouter);
-app.use("/users", usersRouter);
-app.use("/bugs", bugsRouter);
+const testRouter = require("./routes/test");
+
+app.use("/projects", projectsRouter);
+app.use("/users", registerRouter);
+app.use("/projects/bugs", bugsRouter);
 app.use("/auth", authRouter);
+
+app.use("/test", testRouter);
 
 app.get("/", (req, res) => {
   res.send("<h1>Hello from node express app</h1>");
