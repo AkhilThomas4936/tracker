@@ -6,9 +6,11 @@ const { check, validationResult } = require("express-validator");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
-router.get("/", auth, async (req, res) => {
+router.get("/user", auth, async (req, res) => {
   try {
-    const user = await User.findById(req.user.id).select("-password");
+    const user = await User.findOne({ email: req.user.email }).select(
+      "-password"
+    );
     res.json(user);
   } catch (err) {
     console.error(err.message);
@@ -42,6 +44,11 @@ router.post(
           .json({ errors: [{ msg: "Invalid email or password" }] });
       }
 
+      //Checking the password matching or not
+      /*if the user with that email exists,then the user object 
+      has the hashed password inside so we compare the plain text 
+      entered by the user and the hashed password that coming from the db*/
+
       const isMatch = await bcrypt.compare(password, user.password);
 
       if (!isMatch) {
@@ -52,7 +59,7 @@ router.post(
 
       const payload = {
         user: {
-          id: user.id,
+          email: user.email,
         },
       };
       const secretKey = process.env.JWT_SECRET;

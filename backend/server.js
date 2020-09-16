@@ -25,16 +25,12 @@ connection.once("open", () => {
 const projectsRouter = require("./routes/projects");
 const registerRouter = require("./routes/register");
 const bugsRouter = require("./routes/bugs");
-const authRouter = require("./routes/auth");
-
-const testRouter = require("./routes/test");
+const loginRouter = require("./routes/login");
 
 app.use("/projects", projectsRouter);
 app.use("/users", registerRouter);
 app.use("/projects/bugs", bugsRouter);
-app.use("/auth", authRouter);
-
-app.use("/test", testRouter);
+app.use("/auth", loginRouter);
 
 app.get("/", (req, res) => {
   res.send("<h1>Hello from node express app</h1>");

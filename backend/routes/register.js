@@ -49,10 +49,12 @@ router.post(
       await user.save();
 
       //return jsonwebtoken
+      /* Sending the user email as payload as we need the email to 
+      authenticate other routes later*/
 
       const payload = {
         user: {
-          id: user.id,
+          email: user.email,
         },
       };
       const secretKey = process.env.JWT_SECRET;

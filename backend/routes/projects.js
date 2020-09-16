@@ -1,17 +1,43 @@
 const router = require("express").Router();
-let Project = require("../models/projects.model");
+let Projects = require("../models/projects.model");
 let mail = require("../mailer");
-const { check, validationResult } = require("express-validator");
+const auth = require("./middleware/auth");
+// const { check, validationResult } = require("express-validator");
 const projectNameChecker = require("./middleware/projectNameChecker");
 
-router.route("/").get((req, res) => {
-  Project.find()
+// Unauthorized route
 
-    .then((projects) => res.json(projects))
-    .catch((err) => res.status(400).json("Error" + err));
+// router.get("/", auth, (req, res) => {
+//   Project.find()
+
+//     .then((projects) => res.json(projects))
+//     .catch((err) => res.status(400).json("Error" + err));
+// });
+
+//Authorized route for projects
+router.get("/", auth, async (req, res) => {
+  const userEmail = req.user.email;
+  console.log(userEmail);
+  try {
+    let test = await Projects.find({
+      teamMembers: `${userEmail}`,
+    });
+
+    //if the user is not included in any projects
+
+    if (test.length === 0) {
+      return res.send(
+        "You are not a member of any Project! Create a new project"
+      );
+    }
+    if (!test) {
+      return res.status(400).json({ errors: [{ msg: "Invalid text search" }] });
+    }
+    res.send(test);
+  } catch (err) {
+    res.status(400).json("Error:" + err);
+  }
 });
-
-//middleware functon to check the ProjectName already exists
 
 //Creating a new project
 
@@ -26,7 +52,7 @@ router.post(
     const teamMembers = req.body.teamMembers;
     const duration = req.body.duration;
 
-    const newProject = new Project({
+    const newProject = new Projects({
       projectName,
       teamMembers,
       duration,
