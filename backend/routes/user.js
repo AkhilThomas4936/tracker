@@ -18,7 +18,6 @@ router.get("/user", auth, async (req, res) => {
   }
 });
 
-//Route "/auth"
 //desc Authenticate User & get token
 
 router.post(
@@ -74,5 +73,18 @@ router.post(
     }
   }
 );
+
+//Deleting the user
+router.delete("/delete", auth, async (req, res) => {
+  try {
+    console.log(req.user.email);
+    await User.findOneAndRemove({ email: req.user.email });
+
+    res.json("User deleted");
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
 
 module.exports = router;

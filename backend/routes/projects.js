@@ -1,18 +1,10 @@
 const router = require("express").Router();
-let Projects = require("../models/projects.model");
+const Projects = require("../models/projects.model");
 let mail = require("../mailer");
 const auth = require("./middleware/auth");
 // const { check, validationResult } = require("express-validator");
 const projectNameChecker = require("./middleware/projectNameChecker");
-
-// Unauthorized route
-
-// router.get("/", auth, (req, res) => {
-//   Project.find()
-
-//     .then((projects) => res.json(projects))
-//     .catch((err) => res.status(400).json("Error" + err));
-// });
+// const Project = require("../models/projects.model");
 
 //Authorized route for projects
 router.get("/", auth, async (req, res) => {
@@ -45,17 +37,19 @@ router.post(
   "/add",
 
   // [check("projectName", "Project name is required").not().isEmpty()],
-  projectNameChecker,
+  [auth, projectNameChecker],
 
   async (req, res) => {
     const projectName = req.body.projectName;
     const teamMembers = req.body.teamMembers;
     const duration = req.body.duration;
+    const createdBy = req.user.email;
 
     const newProject = new Projects({
       projectName,
       teamMembers,
       duration,
+      createdBy,
     });
 
     // const errors = validationResult(req);
@@ -73,5 +67,19 @@ router.post(
     }
   }
 );
+
+//Deleting project
+
+router.delete("/delete/:projectName", auth, async (req, res) => {
+  try {
+    await Projects.findOneAndRemove({
+      projectName: req.params.projectName,
+    });
+    res.send("Project Deleted");
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
 
 module.exports = router;

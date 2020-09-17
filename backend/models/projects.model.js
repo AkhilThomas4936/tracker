@@ -3,7 +3,6 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const bugSchema = new Schema({
-  bugId: { type: Number },
   title: { type: String, required: true },
   status: { type: String, required: true },
   createdBy: { type: String },
@@ -18,6 +17,7 @@ const projectSchema = new Schema({
   projectName: { type: String, rquired: true, unique: true, trim: true },
   teamMembers: { type: Array },
   duration: { type: String },
+  createdBy: { type: String },
 
   bugs: [bugSchema],
   date: { type: Date, default: Date.now },

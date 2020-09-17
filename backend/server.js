@@ -5,7 +5,7 @@ const mongoose = require("mongoose");
 require("dotenv").config();
 
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 5000;
 
 //Init middlewares CORS and body parser
 app.use(cors());
@@ -16,6 +16,7 @@ mongoose.connect(uri, {
   useNewUrlParser: true,
   useCreateIndex: true,
   useUnifiedTopology: true,
+  useFindAndModify: false,
 });
 const connection = mongoose.connection;
 connection.once("open", () => {
@@ -25,12 +26,12 @@ connection.once("open", () => {
 const projectsRouter = require("./routes/projects");
 const registerRouter = require("./routes/register");
 const bugsRouter = require("./routes/bugs");
-const loginRouter = require("./routes/login");
+const userRouter = require("./routes/user");
 
 app.use("/projects", projectsRouter);
 app.use("/users", registerRouter);
 app.use("/projects/bugs", bugsRouter);
-app.use("/auth", loginRouter);
+app.use("/user", userRouter);
 
 app.get("/", (req, res) => {
   res.send("<h1>Hello from node express app</h1>");
