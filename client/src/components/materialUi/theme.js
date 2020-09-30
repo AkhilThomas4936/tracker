@@ -1,19 +1,13 @@
 import { createMuiTheme } from "@material-ui/core/styles";
 
-const fixWhite = "#F5F5F5";
-const fixBlue = "#1976d2";
-
 export default createMuiTheme({
   palette: {
-    common: {
-      fixBlue: `${fixWhite}`,
-      fixOrange: `${fixBlue}`,
-    },
+    common: {},
     primary: {
-      main: `${fixWhite}`,
+      main: "#303f9f",
     },
     secondary: {
-      main: `${fixBlue}`,
+      main: "#f50057",
     },
   },
   typography: {
