@@ -1,8 +1,9 @@
 import React, { useState, Fragment } from "react";
-import { makeStyles, useTheme } from "@material-ui/styles";
 import { Link } from "react-router-dom";
-// import logo from "../imgs/logo.png";
-import logo from "../imgs/fixit.svg";
+import { connect } from "react-redux";
+import { logout } from "../actions/auth";
+import PropTypes from "prop-types";
+import { makeStyles, useTheme } from "@material-ui/styles";
 import bear from "../imgs/bear.png";
 import {
   Paper,
@@ -82,10 +83,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Navbar() {
+function Navbar({ isAuthenticated, logout }) {
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.down("md"));
-  const matchesXs = useMediaQuery(theme.breakpoints.down("xs"));
+  // const matchesXs = useMediaQuery(theme.breakpoints.down("xs"));
   const iOS = process.browser && /iPad|iPhone|iPod/.test(navigator.userAgent);
 
   //To fix the indication tab on refresh
@@ -126,6 +127,14 @@ function Navbar() {
           className={classes.tab}
           label="Contact"
         />
+        {isAuthenticated ? (
+          <Tab
+            component={Link}
+            to="/login"
+            className={classes.tab}
+            label="Logout"
+          />
+        ) : null}
       </Tabs>
     </Fragment>
   );
@@ -186,6 +195,23 @@ function Navbar() {
               Contact
             </ListItemText>
           </ListItem>
+          {isAuthenticated ? (
+            <ListItem
+              onClick={() => {
+                setOpenDrawer(false);
+                setValue(3);
+              }}
+              divider
+              button
+              component={Link}
+              to="/login"
+              selected={value === 3}
+            >
+              <ListItemText className={classes.drawerItem} disableTypography>
+                Logout
+              </ListItemText>
+            </ListItem>
+          ) : null}
         </List>
       </SwipeableDrawer>
       <IconButton
@@ -221,4 +247,18 @@ function Navbar() {
     </React.Fragment>
   );
 }
-export default Navbar;
+
+Navbar.propTypes = {
+  isAuthenticated: PropTypes.bool,
+  loading: PropTypes.bool,
+  logout: PropTypes.func.isRequired,
+};
+
+function mapStateToProps(state) {
+  const { isAuthenticated, loading } = state.auth;
+  return {
+    isAuthenticated,
+    loading,
+  };
+}
+export default connect(mapStateToProps, { logout })(Navbar);

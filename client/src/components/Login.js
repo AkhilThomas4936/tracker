@@ -1,13 +1,20 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-import Avatar from "@material-ui/core/Avatar";
-import Button from "@material-ui/core/Button";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import TextField from "@material-ui/core/TextField";
+import { Link, Redirect } from "react-router-dom";
+import { connect } from "react-redux";
+import { loginUser } from "../actions/auth";
+import PropTypes from "prop-types";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-import Typography from "@material-ui/core/Typography";
-import { makeStyles } from "@material-ui/core/styles";
-import Container from "@material-ui/core/Container";
+import {
+  Avatar,
+  Button,
+  CssBaseline,
+  TextField,
+  Typography,
+  makeStyles,
+  Container,
+  Grid,
+} from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -29,13 +36,20 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Login() {
-  const { register, handleSubmit, errors, getValues } = useForm();
+function Login({ loginUser, isAuthenticated }) {
+  const { register, handleSubmit, errors } = useForm();
   const classes = useStyles();
 
   const handleOnSubmit = async (data) => {
     const { email, password } = data;
+    console.log(isAuthenticated);
+    loginUser(email, password);
   };
+
+  //Redirect if logged in
+  if (isAuthenticated) {
+    return <Redirect to="/dashboard" />;
+  }
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -101,8 +115,37 @@ export default function Login() {
           >
             Sign In
           </Button>
+          <Grid container>
+            <Grid item xs>
+              <p style={{ color: "#1976d2", margin: 0 }} variant="body2">
+                {"Don't have an account? "}
+              </p>
+            </Grid>
+            <Grid item>
+              <Link
+                style={{ textDecoration: "none", color: "#1976d2" }}
+                to="/register"
+                variant="body2"
+              >
+                {"Sign Up"}
+              </Link>
+            </Grid>
+          </Grid>
         </form>
       </div>
     </Container>
   );
 }
+Login.propTypes = {
+  loginUser: PropTypes.func.isRequired,
+  isAuthenticated: PropTypes.bool,
+};
+
+function mapStateToProps(state) {
+  const { isAuthenticated } = state.auth;
+  return {
+    isAuthenticated,
+  };
+}
+
+export default connect(mapStateToProps, { loginUser })(Login);

@@ -1,6 +1,6 @@
 import { SET_ALERT, REMOVE_ALERT } from "../actions/alert";
 
-export default function (state = [], action) {
+export default function alert(state = [], action) {
   const { type, payload } = action;
   switch (type) {
     case SET_ALERT:

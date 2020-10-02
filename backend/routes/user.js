@@ -24,7 +24,7 @@ router.post(
   "/login",
   [
     check("email", "Please include a valid email").isEmail(),
-    check("password", "Password id required").exists(),
+    check("password", "Password is required").exists(),
   ],
   async (req, res) => {
     const { email, password } = req.body;

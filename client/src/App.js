@@ -1,17 +1,30 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Route, Switch } from "react-router-dom";
+import { store } from "./index";
 import "./App.css";
 import { ThemeProvider } from "@material-ui/core/styles";
 import theme from "./components/materialUi/theme";
-
+import setAuthToken from "./utils/setAuthToken";
+import { loadUser } from "./actions/auth";
+//components
 import Navbar from "./components/Navabar";
 import Welcome from "./components/Welcome";
 import About from "./components/About";
 import Contact from "./components/Contact";
 import Register from "./components/Register";
 import Login from "./components/Login";
+import Alerts from "./components/Alerts";
+import Dashboard from "./components/Dashboard";
+
+if (localStorage.token) {
+  setAuthToken(localStorage.token);
+}
 
 function App() {
+  useEffect(() => {
+    store.dispatch(loadUser());
+  }, []);
+
   return (
     <ThemeProvider theme={theme}>
       <Navbar />
@@ -21,7 +34,9 @@ function App() {
         <Route exact path="/contact" render={() => <Contact />} />
         <Route exact path="/register" render={() => <Register />} />
         <Route exact path="/login" render={() => <Login />} />
+        <Route exact path="/dashboard" render={() => <Dashboard />} />
       </Switch>
+      <Alerts />
     </ThemeProvider>
   );
 }

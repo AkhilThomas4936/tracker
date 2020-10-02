@@ -1,13 +1,21 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-import Avatar from "@material-ui/core/Avatar";
-import Button from "@material-ui/core/Button";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import TextField from "@material-ui/core/TextField";
+import { Link, Redirect } from "react-router-dom";
+import { connect } from "react-redux";
+import { registerUser } from "../actions/auth";
+import PropTypes from "prop-types";
+
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-import Typography from "@material-ui/core/Typography";
-import { makeStyles } from "@material-ui/core/styles";
-import Container from "@material-ui/core/Container";
+import {
+  Avatar,
+  Button,
+  CssBaseline,
+  TextField,
+  Typography,
+  makeStyles,
+  Container,
+  Grid,
+} from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -29,13 +37,23 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Register() {
+function Register({ registerUser, isAuthenticated }) {
   const { register, handleSubmit, errors, getValues } = useForm();
   const classes = useStyles();
 
-  const handleOnSubmit = async (data) => {
-    const { username, email, password, confirmPassword } = data;
+  const handleOnSubmit = (data) => {
+    const { username, email, password } = data;
+    registerUser({ username, email, password });
   };
+
+  // const onClick = () => {
+  //   setAlert("Successfully registered", "success");
+  // };
+
+  if (isAuthenticated) {
+    return <Redirect to="/dashboard" />;
+  }
+
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -137,6 +155,7 @@ export default function Register() {
           )}
 
           <Button
+            // onClick={onClick}
             type="submit"
             fullWidth
             variant="contained"
@@ -145,8 +164,40 @@ export default function Register() {
           >
             Sign Up
           </Button>
+
+          <Grid container>
+            <Grid item xs>
+              <p style={{ color: "#1976d2", margin: 0 }} variant="body2">
+                {"Already have an account? "}
+              </p>
+            </Grid>
+            <Grid item>
+              <Link
+                style={{ textDecoration: "none", color: "#1976d2" }}
+                to="/login"
+                variant="body2"
+              >
+                {"Sign In"}
+              </Link>
+            </Grid>
+          </Grid>
         </form>
       </div>
     </Container>
   );
 }
+
+Register.propTypes = {
+  setAlert: PropTypes.func.isRequired,
+  registerUser: PropTypes.func.isRequired,
+  isAuthenticated: PropTypes.bool,
+};
+
+function mapStateToProps(state) {
+  const { isAuthenticated } = state.auth;
+  return {
+    isAuthenticated,
+  };
+}
+
+export default connect(mapStateToProps, { registerUser })(Register);

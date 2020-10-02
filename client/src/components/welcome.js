@@ -61,9 +61,6 @@ function Welcome() {
   const matches = useMediaQuery(theme.breakpoints.down("xs"));
   const matchesSm = useMediaQuery(theme.breakpoints.down("sm"));
 
-  const onClick = () => {
-    console.log("clicked");
-  };
   const gridSm = (
     <Fragment>
       <Grid container spacing={0} justify="center" direction="column">
@@ -88,11 +85,7 @@ function Welcome() {
 
             <div className={classes.root}>
               <Link to="/register" style={{ textDecoration: "none" }}>
-                <Button
-                  onClick={onClick}
-                  variant="contained"
-                  className={classes.btn}
-                >
+                <Button variant="contained" className={classes.btn}>
                   <strong>Sign Up</strong>
                 </Button>
               </Link>
@@ -121,11 +114,7 @@ function Welcome() {
 
             <div className={classes.root}>
               <Link to="/register" style={{ textDecoration: "none" }}>
-                <Button
-                  onClick={onClick}
-                  variant="contained"
-                  className={classes.btn}
-                >
+                <Button variant="contained" className={classes.btn}>
                   <strong>Sign Up</strong>
                 </Button>
               </Link>
