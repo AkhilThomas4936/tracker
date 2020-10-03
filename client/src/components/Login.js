@@ -42,7 +42,7 @@ function Login({ loginUser, isAuthenticated }) {
 
   const handleOnSubmit = async (data) => {
     const { email, password } = data;
-    console.log(isAuthenticated);
+    // console.log(isAuthenticated);
     loginUser(email, password);
   };
 

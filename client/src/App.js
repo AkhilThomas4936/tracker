@@ -7,6 +7,7 @@ import theme from "./components/materialUi/theme";
 import setAuthToken from "./utils/setAuthToken";
 import { loadUser } from "./actions/auth";
 //components
+import PrivateRoute from "./components/routing/PrivateRoute";
 import Navbar from "./components/Navabar";
 import Welcome from "./components/Welcome";
 import About from "./components/About";
@@ -34,7 +35,7 @@ function App() {
         <Route exact path="/contact" render={() => <Contact />} />
         <Route exact path="/register" render={() => <Register />} />
         <Route exact path="/login" render={() => <Login />} />
-        <Route exact path="/dashboard" render={() => <Dashboard />} />
+        <PrivateRoute exact path="/dashboard" component={Dashboard} />
       </Switch>
       <Alerts />
     </ThemeProvider>

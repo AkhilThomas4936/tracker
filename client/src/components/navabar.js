@@ -5,7 +5,9 @@ import { logout } from "../actions/auth";
 import PropTypes from "prop-types";
 import { makeStyles, useTheme } from "@material-ui/styles";
 import bear from "../imgs/bear.png";
+// import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import {
+  // Avatar,
   Paper,
   Tab,
   AppBar,
@@ -83,7 +85,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Navbar({ isAuthenticated, logout }) {
+function Navbar({ isAuthenticated, loading, logout }) {
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.down("md"));
   // const matchesXs = useMediaQuery(theme.breakpoints.down("xs"));
@@ -127,14 +129,18 @@ function Navbar({ isAuthenticated, logout }) {
           className={classes.tab}
           label="Contact"
         />
-        {isAuthenticated ? (
+        {!loading && isAuthenticated && (
           <Tab
+            onClick={() => {
+              logout();
+              setValue(0);
+            }}
             component={Link}
             to="/login"
             className={classes.tab}
             label="Logout"
           />
-        ) : null}
+        )}
       </Tabs>
     </Fragment>
   );
@@ -195,23 +201,24 @@ function Navbar({ isAuthenticated, logout }) {
               Contact
             </ListItemText>
           </ListItem>
-          {isAuthenticated ? (
+          {!loading && isAuthenticated && (
             <ListItem
               onClick={() => {
                 setOpenDrawer(false);
-                setValue(3);
+                logout();
               }}
+              // onClick={logout}
               divider
               button
               component={Link}
               to="/login"
-              selected={value === 3}
+              // selected={value === 3}
             >
               <ListItemText className={classes.drawerItem} disableTypography>
                 Logout
               </ListItemText>
             </ListItem>
-          ) : null}
+          )}
         </List>
       </SwipeableDrawer>
       <IconButton

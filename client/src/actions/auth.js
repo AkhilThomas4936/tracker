@@ -1,6 +1,8 @@
 import axios from "axios";
 import { setAlert } from "./alert";
+import { clearProjects } from "./projects";
 import setAuthToken from "../utils/setAuthToken";
+
 export const REGISTER_SUCCESS = "REGISTER_SUCCESS";
 export const REGISTER_FAIL = "REGISTER_FAIL";
 export const USER_LOADED = "USER_LOADED";
@@ -16,7 +18,7 @@ export const loadUser = () => async (dispatch) => {
   }
   try {
     const res = await axios.get(" http://localhost:5000/user/user");
-    console.log(res);
+    // console.log(res);
     dispatch({
       type: USER_LOADED,
       payload: res.data,
@@ -81,7 +83,7 @@ export const loginUser = (email, password) => async (dispatch) => {
       body,
       config
     );
-    console.log(res.data);
+    // console.log(res.data);
     dispatch({
       type: LOGIN_SUCCESS,
       payload: res.data,
@@ -89,7 +91,7 @@ export const loginUser = (email, password) => async (dispatch) => {
     dispatch(loadUser());
   } catch (err) {
     const errors = err.response.data.errors;
-    // console.log(errors);
+    console.log(errors);
 
     if (errors) {
       errors.forEach((error) => dispatch(setAlert(error.msg, "error")));
@@ -106,4 +108,6 @@ export const logout = () => (dispatch) => {
   dispatch({
     type: LOGOUT,
   });
+  dispatch(setAlert("Logged out successfully", "info"));
+  dispatch(clearProjects());
 };

@@ -72,7 +72,7 @@ function Register({ registerUser, isAuthenticated }) {
           <TextField
             inputRef={register({
               required: true,
-              minLength: 1,
+              minLength: 3,
               validate: (value) => {
                 return !!value.trim();
               },
@@ -92,7 +92,7 @@ function Register({ registerUser, isAuthenticated }) {
           <TextField
             inputRef={register({
               required: true,
-              minLength: 1,
+              minLength: 3,
               validate: (value) => {
                 return !!value.trim();
               },
