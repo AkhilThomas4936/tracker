@@ -1,18 +1,7 @@
-import React, { useState } from "react";
-import "react-datepicker/dist/react-datepicker.css";
+import React, { Fragment } from "react";
 import { useForm } from "react-hook-form";
-import { Link, Redirect } from "react-router-dom";
-import { connect } from "react-redux";
-import { registerUser } from "../actions/auth";
-import PropTypes from "prop-types";
-import "date-fns";
-import DateFnsUtils from "@date-io/date-fns";
-import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker,
-} from "@material-ui/pickers";
-
+import HighlightOffIcon from "@material-ui/icons/HighlightOff";
+// import team from "../imgs/team.svg";
 import {
   Avatar,
   Button,
@@ -21,16 +10,20 @@ import {
   Typography,
   makeStyles,
   Container,
+  Paper,
   Grid,
 } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
-    marginTop: theme.spacing(8),
+    padding: "2rem",
+    paddingBottom: "4rem",
+    marginTop: theme.spacing(1),
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
   },
+
   avatar: {
     margin: theme.spacing(1),
     backgroundColor: theme.palette.secondary.main,
@@ -40,28 +33,45 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(1),
   },
   submit: {
-    margin: theme.spacing(3, 0, 2),
+    margin: theme.spacing(0, 0, 1),
+    padding: " 0.4rem 0rem",
   },
-  icon: {
-    height: "2.5rem",
-    width: "2.5rem",
+  gridContainer: {
+    display: "inline-grid",
+    gridTemplateRows: "1fr",
+    gridTemplateColumns: "10000fr 1fr  ",
+  },
+  gridC: {
+    display: "inline-grid",
+    gridTemplateRows: "1fr",
+    gridTemplateColumns: "1fr 1fr  ",
+    gridGap: "4px",
+  },
+  gridItem: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
   },
 }));
 
-const NewProject = (props) => {
-  const [indexes, setIndexes] = useState([]);
-  const [counter, setCounter] = useState(0);
-  const [selectedDate, setSelectedDate] = useState(new Date());
-
-  const handleDateChange = (date) => {
-    setSelectedDate(date);
-  };
-  const { register, handleSubmit, errors, getValues, control } = useForm();
+function NewTest() {
   const classes = useStyles();
+
+  const [indexes, setIndexes] = React.useState([0]);
+  const [counter, setCounter] = React.useState(1000);
+  const { register, handleSubmit, errors } = useForm();
+
+  const onSubmit = (data) => {
+    const team = [];
+    const { friends } = data;
+    // console.log(friends);
+    friends.map((friend) => team.push(friend.email));
+    console.log(team);
+  };
 
   const addFriend = () => {
     setIndexes((prevIndexes) => [...prevIndexes, counter]);
-    setCounter((prevCounter) => prevCounter + 1);
+    setCounter((prevCounter) => prevCounter - 1);
   };
 
   const removeFriend = (index) => () => {
@@ -71,115 +81,98 @@ const NewProject = (props) => {
     setCounter((prevCounter) => prevCounter - 1);
   };
 
-  const clearFriends = () => {
-    setIndexes([]);
-  };
   return (
-    <Container component="main" maxWidth="xs">
+    <Container component="main" maxWidth="sm">
       <CssBaseline />
-      <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <AddCircleOutlineIcon className={classes.icon} />
-        </Avatar>
+      <Paper elevation={3} className={classes.paper}>
+        <Avatar className={classes.avatar}></Avatar>
+        {/* <img src={team} /> */}
+
         <Typography component="h1" variant="h5">
-          Create Project
+          Invite your teammates
         </Typography>
         <form
-          //   onSubmit={handleSubmit(handleOnSubmit)}
+          onSubmit={handleSubmit(onSubmit)}
           className={classes.form}
           noValidate
         >
-          <TextField
-            inputRef={register({
-              required: true,
-              minLength: 3,
-              validate: (value) => {
-                return !!value.trim();
-              },
-            })}
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="username"
-            label="Project Name"
-            name="projectName"
-            autoFocus
-          />
-          {errors.projectName && (
-            <p style={{ color: "crimson" }}>
-              Please enter a name for the project
-            </p>
-          )}
-          <TextField
-            inputRef={register({
-              required: true,
-              minLength: 3,
-              validate: (value) => {
-                return !!value.trim();
-              },
-            })}
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="email"
-            label="Email address of team members"
-            name="email"
-          />
-          {errors.email && (
-            <p style={{ color: "crimson" }}>Please enter a valid email</p>
-          )}
+          {indexes.map((index) => {
+            const fieldName = `friends[${index}]`;
+            return (
+              <Fragment key={index}>
+                <Grid container className={classes.gridContainer}>
+                  <Grid item className={classes.gridItem}>
+                    <TextField
+                      inputRef={register({
+                        required: true,
+                        minLength: 3,
+                        validate: (value) => {
+                          return !!value.trim();
+                        },
+                      })}
+                      type="text"
+                      variant="outlined"
+                      margin="normal"
+                      required
+                      fullWidth
+                      id="email"
+                      label="Email Address"
+                      name={`${fieldName}.email`}
+                    />
+                  </Grid>
 
-          <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            <h3>From</h3>
-            <Grid container justify="space-around">
-              <KeyboardDatePicker
-                margin="normal"
-                id="date-picker-dialog"
-                label="Date picker dialog"
-                format="MM/dd/yyyy"
-                value={selectedDate}
-                onChange={handleDateChange}
-                KeyboardButtonProps={{
-                  "aria-label": "change date",
-                }}
-              />
-            </Grid>
-          </MuiPickersUtilsProvider>
-          <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            <h3>To</h3>
-            <Grid container justify="space-around">
-              <KeyboardDatePicker
-                margin="normal"
-                id="date-picker-dialog"
-                label="Date picker dialog"
-                format="MM/dd/yyyy"
-                value={selectedDate}
-                onChange={handleDateChange}
-                KeyboardButtonProps={{
-                  "aria-label": "change date",
-                }}
-              />
-            </Grid>
-          </MuiPickersUtilsProvider>
+                  {indexes.length !== 1 && (
+                    <Grid item className={classes.gridItem}>
+                      <HighlightOffIcon
+                        cursor="pointer"
+                        fontSize="large"
+                        style={{ color: "crimson" }}
+                        className={classes.submit}
+                        onClick={removeFriend(index)}
+                      />
+                    </Grid>
+                  )}
+                </Grid>
+                {errors.friends && errors.friends[index] && (
+                  <p style={{ color: "crimson" }}>Please enter a valid email</p>
+                )}
+              </Fragment>
+            );
+          })}
 
-          <Button
-            // onClick={onClick}
-            type="submit"
-            fullWidth
-            variant="contained"
-            style={{ backgroundColor: "#bf1650", color: "white" }}
-            className={classes.submit}
-          >
-            Create
-          </Button>
+          <div>
+            <Grid container className={classes.gridC}>
+              <Grid item className={classes.gridItem}>
+                <Button
+                  fullWidth
+                  style={{ backgroundColor: "#6a5acd", color: "white" }}
+                  className={classes.submit}
+                  type="button"
+                  onClick={addFriend}
+                >
+                  Add more
+                </Button>
+              </Grid>
+              <Grid item className={classes.gridItem}>
+                <Button
+                  fullWidth
+                  style={{
+                    backgroundColor: "rgb(60, 179, 113)",
+                    float: "right",
+                    color: "white",
+                  }}
+                  className={classes.submit}
+                  type="submit"
+                >
+                  Submit
+                </Button>
+              </Grid>
+            </Grid>
+          </div>
         </form>
-      </div>
+      </Paper>
     </Container>
   );
-};
+}
 
-NewProject.propTypes = {};
-
-export default NewProject;
+export default NewTest;

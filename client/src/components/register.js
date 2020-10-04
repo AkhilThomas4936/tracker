@@ -15,6 +15,7 @@ import {
   makeStyles,
   Container,
   Grid,
+  Paper,
 } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
@@ -23,6 +24,8 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
+    padding: "3rem",
+    paddingBottom: "8rem",
   },
   avatar: {
     margin: theme.spacing(1),
@@ -55,9 +58,9 @@ function Register({ registerUser, isAuthenticated }) {
   }
 
   return (
-    <Container component="main" maxWidth="xs">
+    <Container component="main" maxWidth="sm">
       <CssBaseline />
-      <div className={classes.paper}>
+      <Paper elevation={3} className={classes.paper}>
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
         </Avatar>
@@ -182,7 +185,7 @@ function Register({ registerUser, isAuthenticated }) {
             </Grid>
           </Grid>
         </form>
-      </div>
+      </Paper>
     </Container>
   );
 }

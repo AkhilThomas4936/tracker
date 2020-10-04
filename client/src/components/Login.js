@@ -6,6 +6,7 @@ import { loginUser } from "../actions/auth";
 import PropTypes from "prop-types";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import {
+  Paper,
   Avatar,
   Button,
   CssBaseline,
@@ -22,6 +23,8 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
+    padding: "3rem",
+    paddingBottom: "10rem",
   },
   avatar: {
     margin: theme.spacing(1),
@@ -51,9 +54,9 @@ function Login({ loginUser, isAuthenticated }) {
     return <Redirect to="/dashboard" />;
   }
   return (
-    <Container component="main" maxWidth="xs">
+    <Container component="main" maxWidth="sm">
       <CssBaseline />
-      <div className={classes.paper}>
+      <Paper elevation={3} className={classes.paper}>
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
         </Avatar>
@@ -132,7 +135,7 @@ function Login({ loginUser, isAuthenticated }) {
             </Grid>
           </Grid>
         </form>
-      </div>
+      </Paper>
     </Container>
   );
 }

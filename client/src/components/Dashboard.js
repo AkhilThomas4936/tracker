@@ -8,8 +8,6 @@ import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 
 import {
   Avatar,
-  Icon,
-  Grid,
   makeStyles,
   Button,
   Paper,
@@ -56,7 +54,7 @@ const useStyles = makeStyles((theme) => ({
   },
   avatar: {
     float: "right",
-    margin: theme.spacing(1),
+    margin: theme.spacing(5),
     backgroundColor: theme.palette.secondary.main,
   },
   icon: {
@@ -72,6 +70,7 @@ const useStyles = makeStyles((theme) => ({
   },
   tableHead: {
     fontSize: "1.3rem",
+    padding: 0,
   },
 }));
 
@@ -80,7 +79,7 @@ function Dashboard({ getProjects, yourProjects, loading }) {
 
   useEffect(() => {
     getProjects();
-  }, []);
+  });
 
   if (yourProjects === false) {
     return (
@@ -106,64 +105,62 @@ function Dashboard({ getProjects, yourProjects, loading }) {
     );
   }
   return (
-    <div>
-      <Link to="/add">
-        <Avatar className={classes.avatar}>
-          <Tooltip title="Create Project">
-            <AddCircleOutlineIcon className={classes.icon} />
-          </Tooltip>
-        </Avatar>
-      </Link>
-
-      <TableContainer component={Paper}>
-        <Table className={classes.table} aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <TableCell className={classes.tableHead}>Project</TableCell>
-              <TableCell className={classes.tableHead} align="right">
-                Owner
+    <TableContainer component={Paper}>
+      <Table className={classes.table} aria-label="simple table">
+        <TableHead>
+          <TableRow>
+            <TableCell className={classes.tableHead}>Project</TableCell>
+            <TableCell className={classes.tableHead} align="right">
+              Owner
+            </TableCell>
+            <TableCell className={classes.tableHead} align="right">
+              From
+            </TableCell>
+            <TableCell className={classes.tableHead} align="right">
+              To
+            </TableCell>
+            <TableCell align="right">
+              <Link to="/add">
+                <Avatar className={classes.avatar}>
+                  <Tooltip title="Create Project">
+                    <AddCircleOutlineIcon className={classes.icon} />
+                  </Tooltip>
+                </Avatar>
+              </Link>
+            </TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {yourProjects.map((project) => (
+            <TableRow key={project.projectName}>
+              <TableCell component="th" scope="row">
+                <a href="#!" className={classes.a}>
+                  {project.projectName}
+                </a>
               </TableCell>
-              <TableCell className={classes.tableHead} align="right">
-                From
+              <TableCell align="right">{project.createdBy}</TableCell>
+              <TableCell align="right">{project.from}</TableCell>
+              <TableCell align="right">{project.to}</TableCell>
+              <TableCell align="right">
+                {
+                  <Button
+                    variant="contained"
+                    style={{
+                      padding: "0.5em 3em",
+                      color: "white",
+                      backgroundColor: "#3cb371",
+                      textTransform: "none",
+                    }}
+                  >
+                    View details
+                  </Button>
+                }
               </TableCell>
-              <TableCell className={classes.tableHead} align="right">
-                To
-              </TableCell>
-              <TableCell align="right"> </TableCell>
             </TableRow>
-          </TableHead>
-          <TableBody>
-            {yourProjects.map((project) => (
-              <TableRow key={project.projectName}>
-                <TableCell component="th" scope="row">
-                  <a href="#!" className={classes.a}>
-                    {project.projectName}
-                  </a>
-                </TableCell>
-                <TableCell align="right">{project.createdBy}</TableCell>
-                <TableCell align="right">{project.from}</TableCell>
-                <TableCell align="right">{project.to}</TableCell>
-                <TableCell align="right">
-                  {
-                    <Button
-                      variant="contained"
-                      style={{
-                        padding: "0.5em 3em",
-                        color: "white",
-                        backgroundColor: "#4caf50",
-                        textTransform: "none",
-                      }}
-                    >
-                      View details
-                    </Button>
-                  }
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </div>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
   );
 }
 

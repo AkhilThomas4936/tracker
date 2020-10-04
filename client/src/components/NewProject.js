@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import { useForm } from "react-hook-form";
-import { Link, Redirect } from "react-router-dom";
+// import { Link, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
-import { registerUser } from "../actions/auth";
-import PropTypes from "prop-types";
+// import { registerUser } from "../actions/auth";
+// import PropTypes from "prop-types";
 import "date-fns";
 import DateFnsUtils from "@date-io/date-fns";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
@@ -23,6 +23,7 @@ import {
   makeStyles,
   Container,
   Grid,
+  Paper,
 } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
@@ -31,6 +32,8 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
+    padding: "4rem",
+    paddingBottom: "8rem",
   },
   avatar: {
     margin: theme.spacing(1),
@@ -74,9 +77,9 @@ const NewProject = ({ auth, addProject }) => {
     addProject(payload);
   };
   return (
-    <Container component="main" maxWidth="xs">
+    <Container component="main" maxWidth="sm">
       <CssBaseline />
-      <div className={classes.paper}>
+      <Paper elevation={3} className={classes.paper}>
         <Avatar className={classes.avatar}>
           <AddCircleOutlineIcon className={classes.icon} />
         </Avatar>
@@ -118,7 +121,7 @@ const NewProject = ({ auth, addProject }) => {
                 inputRef={register}
                 margin="normal"
                 id="date-picker-dialog"
-                label="Date picker dialog"
+                label="Start date of the project"
                 format="MM/dd/yyyy"
                 value={selectedDateFrom}
                 onChange={handleDateChangeFrom}
@@ -135,7 +138,7 @@ const NewProject = ({ auth, addProject }) => {
                 inputRef={register}
                 margin="normal"
                 id="date-picker-dialog"
-                label="Date picker dialog"
+                label="End date of the project"
                 format="MM/dd/yyyy"
                 value={selectedDateTo}
                 onChange={handleDateChangeTo}
@@ -151,13 +154,13 @@ const NewProject = ({ auth, addProject }) => {
             type="submit"
             fullWidth
             variant="contained"
-            style={{ backgroundColor: "#bf1650", color: "white" }}
+            style={{ backgroundColor: "#3cb371", color: "white" }}
             className={classes.submit}
           >
             Create
           </Button>
         </form>
-      </div>
+      </Paper>
     </Container>
   );
 };

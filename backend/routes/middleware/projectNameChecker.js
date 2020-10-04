@@ -5,7 +5,7 @@ module.exports = async function isProjectNameUnique(req, res, next) {
 
   if (isExists) {
     return res.status(401).json({
-      msg: "This Project name already exists.Please use another one",
+      msg: "This project name is taken.Please use another one",
     });
   } else if (req.body.projectName.trim() === "") {
     return res.status(401).json({

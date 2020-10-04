@@ -43,11 +43,11 @@ export const addProject = (payload) => async (dispatch) => {
     });
     dispatch(setAlert("Project added successfully", "success"));
   } catch (err) {
-    const errors = err.response.data.errors;
-    console.log(errors);
+    const error = err.response.data.msg;
+    // console.log(err.response.data);
 
-    if (errors) {
-      errors.forEach((error) => dispatch(setAlert(error.msg, "error")));
+    if (error) {
+      dispatch(setAlert(error, "error"));
     }
     dispatch({
       type: ADD_PROJECT_FAIL,
