@@ -1,4 +1,9 @@
-import { GET_PROJECTS, CLEAR_PROJECTS } from "../actions/projects";
+import {
+  GET_PROJECTS,
+  CLEAR_PROJECTS,
+  ADD_PROJECT,
+  ADD_PROJECT_FAIL,
+} from "../actions/projects";
 
 const initialState = {
   yourProjects: [],
@@ -21,6 +26,15 @@ export default function (state = initialState, action) {
         ...state,
         yourProjects: [],
         loading: true,
+      };
+
+    case ADD_PROJECT:
+      return {
+        ...state,
+      };
+    case ADD_PROJECT_FAIL:
+      return {
+        ...state,
       };
     default:
       return state;

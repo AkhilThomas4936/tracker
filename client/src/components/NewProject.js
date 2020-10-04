@@ -12,6 +12,7 @@ import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from "@material-ui/pickers";
+import { addProject } from "../actions/projects";
 
 import {
   Avatar,
@@ -48,14 +49,30 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const NewProject = (props) => {
-  const [selectedDate, setSelectedDate] = React.useState(new Date());
+const NewProject = ({ auth, addProject }) => {
+  const [selectedDateFrom, setSelectedDateFrom] = React.useState(new Date());
+  const [selectedDateTo, setSelectedDateTo] = React.useState(new Date());
+  const { register, handleSubmit, errors } = useForm();
 
-  const handleDateChange = (date) => {
-    setSelectedDate(date);
+  const handleDateChangeFrom = (date) => {
+    setSelectedDateFrom(date);
   };
-  const { register, handleSubmit, errors, getValues, control } = useForm();
+  const handleDateChangeTo = (date) => {
+    setSelectedDateTo(date);
+  };
   const classes = useStyles();
+  const handleOnSubmit = (data) => {
+    const { projectName } = data;
+    const teamMembers = [auth.user.email];
+    const payload = {
+      projectName,
+      teamMembers,
+      from: selectedDateFrom,
+      to: selectedDateTo,
+    };
+    console.log(payload);
+    addProject(payload);
+  };
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -67,7 +84,7 @@ const NewProject = (props) => {
           Create Project
         </Typography>
         <form
-          //   onSubmit={handleSubmit(handleOnSubmit)}
+          onSubmit={handleSubmit(handleOnSubmit)}
           className={classes.form}
           noValidate
         >
@@ -93,36 +110,18 @@ const NewProject = (props) => {
               Please enter a name for the project
             </p>
           )}
-          <TextField
-            inputRef={register({
-              required: true,
-              minLength: 3,
-              validate: (value) => {
-                return !!value.trim();
-              },
-            })}
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="email"
-            label="Email address of team members"
-            name="email"
-          />
-          {errors.email && (
-            <p style={{ color: "crimson" }}>Please enter a valid email</p>
-          )}
 
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <h3>From</h3>
             <Grid container justify="space-around">
               <KeyboardDatePicker
+                inputRef={register}
                 margin="normal"
                 id="date-picker-dialog"
                 label="Date picker dialog"
                 format="MM/dd/yyyy"
-                value={selectedDate}
-                onChange={handleDateChange}
+                value={selectedDateFrom}
+                onChange={handleDateChangeFrom}
                 KeyboardButtonProps={{
                   "aria-label": "change date",
                 }}
@@ -133,34 +132,19 @@ const NewProject = (props) => {
             <h3>To</h3>
             <Grid container justify="space-around">
               <KeyboardDatePicker
+                inputRef={register}
                 margin="normal"
                 id="date-picker-dialog"
                 label="Date picker dialog"
                 format="MM/dd/yyyy"
-                value={selectedDate}
-                onChange={handleDateChange}
+                value={selectedDateTo}
+                onChange={handleDateChangeTo}
                 KeyboardButtonProps={{
                   "aria-label": "change date",
                 }}
               />
             </Grid>
           </MuiPickersUtilsProvider>
-          <TextField
-            inputRef={register({
-              required: true,
-              minLength: 3,
-              validate: (value) => {
-                return !!value.trim();
-              },
-            })}
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="email"
-            label="Email address of team members"
-            name="email"
-          />
 
           <Button
             // onClick={onClick}
@@ -180,4 +164,11 @@ const NewProject = (props) => {
 
 NewProject.propTypes = {};
 
-export default NewProject;
+function mapStateToProps(state) {
+  const { auth } = state;
+  return {
+    auth,
+  };
+}
+
+export default connect(mapStateToProps, { addProject })(NewProject);

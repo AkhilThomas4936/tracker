@@ -124,7 +124,10 @@ function Dashboard({ getProjects, yourProjects, loading }) {
                 Owner
               </TableCell>
               <TableCell className={classes.tableHead} align="right">
-                Duration
+                From
+              </TableCell>
+              <TableCell className={classes.tableHead} align="right">
+                To
               </TableCell>
               <TableCell align="right"> </TableCell>
             </TableRow>
@@ -138,7 +141,8 @@ function Dashboard({ getProjects, yourProjects, loading }) {
                   </a>
                 </TableCell>
                 <TableCell align="right">{project.createdBy}</TableCell>
-                <TableCell align="right">{project.duration}</TableCell>
+                <TableCell align="right">{project.from}</TableCell>
+                <TableCell align="right">{project.to}</TableCell>
                 <TableCell align="right">
                   {
                     <Button

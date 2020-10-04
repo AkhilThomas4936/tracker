@@ -1,9 +1,11 @@
 import axios from "axios";
-// import { setAlert } from "./alert";
+import { setAlert } from "./alert";
 
 //actions
 export const GET_PROJECTS = "GET_PROJECTS";
 export const CLEAR_PROJECTS = "CLEAR_PROJECTS";
+export const ADD_PROJECT = "ADD_PROJECT";
+export const ADD_PROJECT_FAIL = "ADD_PROJECT_FAIL";
 
 export const getProjects = () => async (dispatch) => {
   try {
@@ -23,4 +25,32 @@ export const clearProjects = () => (dispatch) => {
   dispatch({
     type: CLEAR_PROJECTS,
   });
+};
+
+export const addProject = (payload) => async (dispatch) => {
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+  const body = JSON.stringify(payload);
+
+  try {
+    await axios.post("http://localhost:5000/projects/add", body, config);
+
+    dispatch({
+      type: ADD_PROJECT,
+    });
+    dispatch(setAlert("Project added successfully", "success"));
+  } catch (err) {
+    const errors = err.response.data.errors;
+    console.log(errors);
+
+    if (errors) {
+      errors.forEach((error) => dispatch(setAlert(error.msg, "error")));
+    }
+    dispatch({
+      type: ADD_PROJECT_FAIL,
+    });
+  }
 };

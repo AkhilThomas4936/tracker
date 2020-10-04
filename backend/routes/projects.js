@@ -59,15 +59,15 @@ router.post(
     // if (!errors.isEmpty()) {
     //   return res.status(400).json({ errors: errors.array() });
     // }
-    const mailList = teamMembers;
-    const index = mailList.indexOf(createdBy);
-    if (index > -1) {
-      mailList.splice(index, 1);
-    }
+    // const mailList = teamMembers;
+    // const index = mailList.indexOf(createdBy);
+    // if (index > -1) {
+    //   mailList.splice(index, 1);
+    // }
 
     try {
       await newProject.save();
-      await mail(mailList);
+      // await mail(mailList);
 
       res.send("Project added successfully");
     } catch (err) {
