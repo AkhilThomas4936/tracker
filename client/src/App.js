@@ -16,6 +16,9 @@ import Register from "./components/Register";
 import Login from "./components/Login";
 import Alerts from "./components/Alerts";
 import Dashboard from "./components/Dashboard";
+import NewProject from "./components/NewProject";
+import Test1 from "./components/test1";
+import NewTest from "./components/NewTest";
 
 if (localStorage.token) {
   setAuthToken(localStorage.token);
@@ -31,11 +34,12 @@ function App() {
       <Navbar />
       <Switch>
         <Route exact path="/" render={() => <Welcome />} />
-        <Route exact path="/about" render={() => <About />} />
-        <Route exact path="/contact" render={() => <Contact />} />
+        <Route exact path="/about" render={() => <NewTest />} />
+        <Route exact path="/contact" render={() => <Test1 />} />
         <Route exact path="/register" render={() => <Register />} />
         <Route exact path="/login" render={() => <Login />} />
         <PrivateRoute exact path="/dashboard" component={Dashboard} />
+        <PrivateRoute exact path="/add" component={NewProject} />
       </Switch>
       <Alerts />
     </ThemeProvider>

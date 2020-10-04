@@ -16,7 +16,9 @@ const bugSchema = new Schema({
 const projectSchema = new Schema({
   projectName: { type: String, rquired: true, unique: true, trim: true },
   teamMembers: { type: Array },
-  duration: { type: String },
+  // duration: { type: String },
+  from: { type: Date },
+  to: { type: Date },
   createdBy: { type: String },
 
   bugs: [bugSchema],

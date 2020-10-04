@@ -131,6 +131,14 @@ function Navbar({ isAuthenticated, loading, logout }) {
         />
         {!loading && isAuthenticated && (
           <Tab
+            component={Link}
+            to="/dashboard"
+            className={classes.tab}
+            label="Dashboard"
+          />
+        )}
+        {!loading && isAuthenticated && (
+          <Tab
             onClick={() => {
               logout();
               setValue(0);
@@ -201,6 +209,23 @@ function Navbar({ isAuthenticated, loading, logout }) {
               Contact
             </ListItemText>
           </ListItem>
+          {!loading && isAuthenticated && (
+            <ListItem
+              onClick={() => {
+                setOpenDrawer(false);
+              }}
+              // onClick={logout}
+              divider
+              button
+              component={Link}
+              to="/dashboard"
+              // selected={value === 3}
+            >
+              <ListItemText className={classes.drawerItem} disableTypography>
+                Dashboard
+              </ListItemText>
+            </ListItem>
+          )}
           {!loading && isAuthenticated && (
             <ListItem
               onClick={() => {

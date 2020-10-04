@@ -1,9 +1,26 @@
 import React, { useEffect } from "react";
+import { Link } from "react-router-dom";
 import { getProjects } from "../actions/projects";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import noProjects from "../imgs/noProjects.svg";
-import { makeStyles, Button } from "@material-ui/core";
+import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
+
+import {
+  Avatar,
+  Icon,
+  Grid,
+  makeStyles,
+  Button,
+  Paper,
+  Table,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  TableBody,
+  Tooltip,
+} from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -20,6 +37,7 @@ const useStyles = makeStyles((theme) => ({
       width: "20rem",
     },
   },
+
   alert: {
     fontFamily: "helvetica",
     fontSize: "1.8rem",
@@ -35,6 +53,25 @@ const useStyles = makeStyles((theme) => ({
     color: "white",
     height: 48,
     padding: "0 30px",
+  },
+  avatar: {
+    float: "right",
+    margin: theme.spacing(1),
+    backgroundColor: theme.palette.secondary.main,
+  },
+  icon: {
+    height: "2.8rem",
+    width: "2.8rem",
+  },
+  table: {
+    minWidth: 650,
+  },
+  a: {
+    textDecoration: "none",
+    color: "#1976d2",
+  },
+  tableHead: {
+    fontSize: "1.3rem",
   },
 }));
 
@@ -60,13 +97,70 @@ function Dashboard({ getProjects, yourProjects, loading }) {
             Create a new one.
           </strong>
         </p>
-        <Button variant="contained" className={classes.btn}>
-          <strong>Create Project</strong>
-        </Button>
+        <Link to="/add" style={{ textDecoration: "none" }}>
+          <Button variant="contained" className={classes.btn}>
+            <strong>Create Project</strong>
+          </Button>
+        </Link>
       </div>
     );
   }
-  return <div>{JSON.stringify(yourProjects)}</div>;
+  return (
+    <div>
+      <Link to="/add">
+        <Avatar className={classes.avatar}>
+          <Tooltip title="Create Project">
+            <AddCircleOutlineIcon className={classes.icon} />
+          </Tooltip>
+        </Avatar>
+      </Link>
+
+      <TableContainer component={Paper}>
+        <Table className={classes.table} aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              <TableCell className={classes.tableHead}>Project</TableCell>
+              <TableCell className={classes.tableHead} align="right">
+                Owner
+              </TableCell>
+              <TableCell className={classes.tableHead} align="right">
+                Duration
+              </TableCell>
+              <TableCell align="right"> </TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {yourProjects.map((project) => (
+              <TableRow key={project.projectName}>
+                <TableCell component="th" scope="row">
+                  <a href="#!" className={classes.a}>
+                    {project.projectName}
+                  </a>
+                </TableCell>
+                <TableCell align="right">{project.createdBy}</TableCell>
+                <TableCell align="right">{project.duration}</TableCell>
+                <TableCell align="right">
+                  {
+                    <Button
+                      variant="contained"
+                      style={{
+                        padding: "0.5em 3em",
+                        color: "white",
+                        backgroundColor: "#4caf50",
+                        textTransform: "none",
+                      }}
+                    >
+                      View details
+                    </Button>
+                  }
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </div>
+  );
 }
 
 Dashboard.propTypes = {

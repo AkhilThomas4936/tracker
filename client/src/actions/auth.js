@@ -108,6 +108,7 @@ export const logout = () => (dispatch) => {
   dispatch({
     type: LOGOUT,
   });
-  dispatch(setAlert("Logged out successfully", "info"));
+  window.localStorage.removeItem("token");
   dispatch(clearProjects());
+  dispatch(setAlert("Logged out successfully", "info"));
 };
