@@ -18,6 +18,7 @@ import Alerts from "./components/Alerts";
 import Dashboard from "./components/Dashboard";
 import NewProject from "./components/NewProject";
 import NewTest from "./components/NewTest";
+import Project from "./components/Project";
 
 if (localStorage.token) {
   setAuthToken(localStorage.token);
@@ -39,6 +40,11 @@ function App() {
         <Route exact path="/login" render={() => <Login />} />
         <PrivateRoute exact path="/dashboard" component={Dashboard} />
         <PrivateRoute exact path="/add" component={NewProject} />
+        <Route
+          exact
+          path="/:projectId"
+          render={(props) => <Project {...props} />}
+        />
       </Switch>
       <Alerts />
     </ThemeProvider>

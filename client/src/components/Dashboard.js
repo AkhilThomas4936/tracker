@@ -18,6 +18,7 @@ import {
   TableRow,
   TableBody,
   Tooltip,
+  Container,
 } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
@@ -79,88 +80,94 @@ function Dashboard({ getProjects, yourProjects, loading }) {
 
   useEffect(() => {
     getProjects();
-  });
+  }, []);
 
   if (yourProjects === false) {
     return (
-      <div className={classes.container}>
-        <img
-          className={classes.img}
-          src={noProjects}
-          alt="no active projects"
-        />
-        <p className={classes.alert}>
-          <strong>
-            You are currently not a member of any projects...!
-            <br />
-            Create a new one.
-          </strong>
-        </p>
-        <Link to="/add" style={{ textDecoration: "none" }}>
-          <Button variant="contained" className={classes.btn}>
-            <strong>Create Project</strong>
-          </Button>
-        </Link>
-      </div>
+      <Container component="main" maxWidth="lg">
+        <div className={classes.container}>
+          <img
+            className={classes.img}
+            src={noProjects}
+            alt="no active projects"
+          />
+          <p className={classes.alert}>
+            <strong>
+              You are currently not a member of any projects...!
+              <br />
+              Create a new one.
+            </strong>
+          </p>
+          <Link to="/add" style={{ textDecoration: "none" }}>
+            <Button variant="contained" className={classes.btn}>
+              <strong>Create Project</strong>
+            </Button>
+          </Link>
+        </div>
+      </Container>
     );
   }
   return (
-    <TableContainer component={Paper}>
-      <Table className={classes.table} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell className={classes.tableHead}>Project</TableCell>
-            <TableCell className={classes.tableHead} align="right">
-              Owner
-            </TableCell>
-            <TableCell className={classes.tableHead} align="right">
-              From
-            </TableCell>
-            <TableCell className={classes.tableHead} align="right">
-              To
-            </TableCell>
-            <TableCell align="right">
-              <Link to="/add">
-                <Avatar className={classes.avatar}>
-                  <Tooltip title="Create Project">
-                    <AddCircleOutlineIcon className={classes.icon} />
-                  </Tooltip>
-                </Avatar>
-              </Link>
-            </TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {yourProjects.map((project) => (
-            <TableRow key={project.projectName}>
-              <TableCell component="th" scope="row">
-                <a href="#!" className={classes.a}>
-                  {project.projectName}
-                </a>
+    <Container component="main" maxWidth="xl">
+      <TableContainer component={Paper}>
+        <Table className={classes.table} aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              <TableCell className={classes.tableHead}>Project</TableCell>
+              <TableCell className={classes.tableHead} align="right">
+                Owner
               </TableCell>
-              <TableCell align="right">{project.createdBy}</TableCell>
-              <TableCell align="right">{project.from}</TableCell>
-              <TableCell align="right">{project.to}</TableCell>
+              <TableCell className={classes.tableHead} align="right">
+                From
+              </TableCell>
+              <TableCell className={classes.tableHead} align="right">
+                To
+              </TableCell>
               <TableCell align="right">
-                {
-                  <Button
-                    variant="contained"
-                    style={{
-                      padding: "0.5em 3em",
-                      color: "white",
-                      backgroundColor: "#3cb371",
-                      textTransform: "none",
-                    }}
-                  >
-                    View details
-                  </Button>
-                }
+                <Link to="/add">
+                  <Avatar className={classes.avatar}>
+                    <Tooltip title="Create Project">
+                      <AddCircleOutlineIcon className={classes.icon} />
+                    </Tooltip>
+                  </Avatar>
+                </Link>
               </TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+          </TableHead>
+          <TableBody>
+            {yourProjects.map((project, index) => (
+              <TableRow key={project.projectName}>
+                <TableCell component="th" scope="row">
+                  <a href="#!" className={classes.a}>
+                    {project.projectName}
+                  </a>
+                </TableCell>
+                <TableCell align="right">{project.createdBy}</TableCell>
+                <TableCell align="right">{project.from}</TableCell>
+                <TableCell align="right">{project.to}</TableCell>
+                <TableCell align="right">
+                  {
+                    <Link to={`/${index}`} style={{ textDecoration: "none" }}>
+                      <Button
+                        variant="contained"
+                        style={{
+                          padding: "0.5em 3em",
+                          color: "white",
+                          backgroundColor: "#3cb371",
+                          textTransform: "none",
+                        }}
+                      >
+                        View details
+                      </Button>
+                    </Link>
+                  }
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Container>
   );
 }
 
