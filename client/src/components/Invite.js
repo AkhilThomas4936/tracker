@@ -54,7 +54,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function NewTest() {
+function Invite() {
   const classes = useStyles();
 
   const [indexes, setIndexes] = React.useState([0]);
@@ -175,4 +175,4 @@ function NewTest() {
   );
 }
 
-export default NewTest;
+export default Invite;

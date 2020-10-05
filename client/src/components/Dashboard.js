@@ -7,6 +7,7 @@ import noProjects from "../imgs/noProjects.svg";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 
 import {
+  Box,
   Avatar,
   makeStyles,
   Button,
@@ -70,7 +71,7 @@ const useStyles = makeStyles((theme) => ({
     color: "#1976d2",
   },
   tableHead: {
-    fontSize: "1.3rem",
+    fontSize: "1.2rem",
     padding: 0,
   },
 }));
@@ -113,17 +114,19 @@ function Dashboard({ getProjects, yourProjects, loading }) {
         <Table className={classes.table} aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell className={classes.tableHead}>Project</TableCell>
-              <TableCell className={classes.tableHead} align="right">
-                Owner
+              <TableCell className={classes.tableHead}>
+                <Box letterSpacing={2}>PROJECT</Box>
               </TableCell>
-              <TableCell className={classes.tableHead} align="right">
-                From
+              <TableCell className={classes.tableHead} align="center">
+                <Box letterSpacing={2}>OWNER</Box>
               </TableCell>
-              <TableCell className={classes.tableHead} align="right">
-                To
+              <TableCell className={classes.tableHead} align="center">
+                <Box letterSpacing={2}>FROM</Box>
               </TableCell>
-              <TableCell align="right">
+              <TableCell className={classes.tableHead} align="center">
+                <Box letterSpacing={2}>TO</Box>
+              </TableCell>
+              <TableCell align="center">
                 <Link to="/add">
                   <Avatar className={classes.avatar}>
                     <Tooltip title="Create Project">
@@ -138,9 +141,15 @@ function Dashboard({ getProjects, yourProjects, loading }) {
             {yourProjects.map((project, index) => (
               <TableRow key={project.projectName}>
                 <TableCell component="th" scope="row">
-                  <a href="#!" className={classes.a}>
+                  <Link
+                    to={`/${index}`}
+                    style={{
+                      textDecoration: "none",
+                      color: "#1976d2",
+                    }}
+                  >
                     {project.projectName}
-                  </a>
+                  </Link>
                 </TableCell>
                 <TableCell align="right">{project.createdBy}</TableCell>
                 <TableCell align="right">{project.from}</TableCell>
@@ -151,13 +160,13 @@ function Dashboard({ getProjects, yourProjects, loading }) {
                       <Button
                         variant="contained"
                         style={{
-                          padding: "0.5em 3em",
+                          padding: "0.1em 3em",
                           color: "white",
                           backgroundColor: "#3cb371",
                           textTransform: "none",
                         }}
                       >
-                        View details
+                        View
                       </Button>
                     </Link>
                   }

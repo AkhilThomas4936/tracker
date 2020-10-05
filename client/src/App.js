@@ -17,8 +17,9 @@ import Login from "./components/Login";
 import Alerts from "./components/Alerts";
 import Dashboard from "./components/Dashboard";
 import NewProject from "./components/NewProject";
-import NewTest from "./components/NewTest";
+import Invite from "./components/Invite";
 import Project from "./components/Project";
+import Bug from "./components/Bug";
 
 if (localStorage.token) {
   setAuthToken(localStorage.token);
@@ -34,7 +35,7 @@ function App() {
       <Navbar />
       <Switch>
         <Route exact path="/" render={() => <Welcome />} />
-        <Route exact path="/about" render={() => <NewTest />} />
+        <Route exact path="/invite" render={() => <Invite />} />
         <Route exact path="/contact" render={() => <Contact />} />
         <Route exact path="/register" render={() => <Register />} />
         <Route exact path="/login" render={() => <Login />} />
@@ -44,6 +45,11 @@ function App() {
           exact
           path="/:projectId"
           render={(props) => <Project {...props} />}
+        />
+        <Route
+          exact
+          path="/:projectId/:bugId"
+          render={(props) => <Bug {...props} />}
         />
       </Switch>
       <Alerts />
