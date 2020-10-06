@@ -7,11 +7,13 @@ import noProjects from "../imgs/noProjects.svg";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 
 import {
+  Paper,
+  Grid,
+  Typography,
   Box,
   Avatar,
   makeStyles,
   Button,
-  Paper,
   Table,
   TableCell,
   TableContainer,
@@ -29,9 +31,8 @@ const useStyles = makeStyles((theme) => ({
     textAlign: "center",
   },
   img: {
-    marginRight: "2rem",
-    height: "30rem",
-    width: "30rem",
+    height: "20rem",
+    width: "20rem",
     [theme.breakpoints.down("sm")]: {
       height: "20rem",
       width: "20rem",
@@ -40,20 +41,12 @@ const useStyles = makeStyles((theme) => ({
 
   alert: {
     fontFamily: "helvetica",
-    fontSize: "1.8rem",
+    fontSize: "1.1rem",
     [theme.breakpoints.down("sm")]: {
       fontSize: "1rem",
     },
   },
-  btn: {
-    background: "linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)",
-    border: 0,
-    borderRadius: 3,
-    boxShadow: "0 3px 5px 2px rgba(255, 105, 135, .3)",
-    color: "white",
-    height: 48,
-    padding: "0 30px",
-  },
+
   avatar: {
     float: "right",
     margin: theme.spacing(5),
@@ -70,10 +63,10 @@ const useStyles = makeStyles((theme) => ({
     textDecoration: "none",
     color: "#1976d2",
   },
-  tableHead: {
-    fontSize: "1.2rem",
-    padding: 0,
-  },
+  // tableHead: {
+  //   fontSize: "1.2rem",
+  //   padding: 0,
+  // },
 }));
 
 function Dashboard({ getProjects, yourProjects, loading }) {
@@ -85,7 +78,7 @@ function Dashboard({ getProjects, yourProjects, loading }) {
 
   if (yourProjects === false) {
     return (
-      <Container component="main" maxWidth="lg">
+      <Container component="main" maxWidth="sm">
         <div className={classes.container}>
           <img
             className={classes.img}
@@ -100,8 +93,16 @@ function Dashboard({ getProjects, yourProjects, loading }) {
             </strong>
           </p>
           <Link to="/add" style={{ textDecoration: "none" }}>
-            <Button variant="contained" className={classes.btn}>
-              <strong>Create Project</strong>
+            <Button
+              variant="contained"
+              style={{
+                padding: "0.4em 2em",
+                color: "white",
+                backgroundColor: "#2e73bf",
+                textTransform: "none",
+              }}
+            >
+              Create project
             </Button>
           </Link>
         </div>
@@ -109,34 +110,61 @@ function Dashboard({ getProjects, yourProjects, loading }) {
     );
   }
   return (
-    <Container component="main" maxWidth="xl">
+    <Container component="main" maxWidth="xl" style={{ padding: 0 }}>
+      <div
+        style={{ backgroundColor: " rgb(217, 226, 226)", padding: "2rem 3rem" }}
+      >
+        <Grid container>
+          <Grid item className={classes.item}>
+            <Typography component="h1" variant="h4" className={classes.heading}>
+              <strong>Current projects</strong>
+            </Typography>
+          </Grid>
+          <Grid item style={{ float: "right" }}>
+            <Link
+              to="/add"
+              style={{
+                textDecoration: "none",
+              }}
+            >
+              <Button
+                variant="contained"
+                style={{
+                  marginLeft: "1rem",
+                  // marginTop: "0.3rem",
+                  padding: "0.4em 1em",
+                  color: "white",
+                  backgroundColor: "#2e73bf",
+                  textTransform: "none",
+                }}
+              >
+                Create new project
+              </Button>
+            </Link>
+          </Grid>
+        </Grid>
+      </div>
+
       <TableContainer component={Paper}>
         <Table className={classes.table} aria-label="simple table">
           <TableHead>
             <TableRow>
               <TableCell className={classes.tableHead}>
+                {" "}
                 <Box letterSpacing={2}>PROJECT</Box>
               </TableCell>
-              <TableCell className={classes.tableHead} align="center">
+              <TableCell className={classes.tableHead} align="right">
                 <Box letterSpacing={2}>OWNER</Box>
               </TableCell>
-              <TableCell className={classes.tableHead} align="center">
+              <TableCell className={classes.tableHead} align="right">
                 <Box letterSpacing={2}>FROM</Box>
               </TableCell>
-              <TableCell className={classes.tableHead} align="center">
+              <TableCell className={classes.tableHead} align="right">
                 <Box letterSpacing={2}>TO</Box>
-              </TableCell>
-              <TableCell align="center">
-                <Link to="/add">
-                  <Avatar className={classes.avatar}>
-                    <Tooltip title="Create Project">
-                      <AddCircleOutlineIcon className={classes.icon} />
-                    </Tooltip>
-                  </Avatar>
-                </Link>
               </TableCell>
             </TableRow>
           </TableHead>
+
           <TableBody>
             {yourProjects.map((project, index) => (
               <TableRow key={project.projectName}>
@@ -151,26 +179,13 @@ function Dashboard({ getProjects, yourProjects, loading }) {
                     {project.projectName}
                   </Link>
                 </TableCell>
-                <TableCell align="right">{project.createdBy}</TableCell>
-                <TableCell align="right">{project.from}</TableCell>
-                <TableCell align="right">{project.to}</TableCell>
                 <TableCell align="right">
-                  {
-                    <Link to={`/${index}`} style={{ textDecoration: "none" }}>
-                      <Button
-                        variant="contained"
-                        style={{
-                          padding: "0.1em 3em",
-                          color: "white",
-                          backgroundColor: "#3cb371",
-                          textTransform: "none",
-                        }}
-                      >
-                        View
-                      </Button>
-                    </Link>
-                  }
+                  {project.createdBy.split("@")[0]}
                 </TableCell>
+                <TableCell align="right">
+                  {project.from.split("T")[0]}
+                </TableCell>
+                <TableCell align="right">{project.to.split("T")[0]}</TableCell>
               </TableRow>
             ))}
           </TableBody>

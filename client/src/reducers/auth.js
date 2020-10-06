@@ -13,6 +13,8 @@ const initialState = {
   isAuthenticated: null,
   loading: true,
   user: null,
+  email: null,
+  username: null,
 };
 
 export default function auth(state = initialState, action) {
@@ -25,6 +27,8 @@ export default function auth(state = initialState, action) {
         isAuthenticated: true,
         loading: false,
         user: payload,
+        email: payload.email,
+        username: payload.username,
       };
     case REGISTER_SUCCESS:
     case LOGIN_SUCCESS:

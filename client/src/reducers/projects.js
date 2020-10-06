@@ -31,6 +31,7 @@ export default function (state = initialState, action) {
     case ADD_PROJECT:
       return {
         ...state,
+        yourProjects: [],
       };
     case ADD_PROJECT_FAIL:
       return {

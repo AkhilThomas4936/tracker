@@ -10,8 +10,6 @@ import { loadUser } from "./actions/auth";
 import PrivateRoute from "./components/routing/PrivateRoute";
 import Navbar from "./components/Navabar";
 import Welcome from "./components/Welcome";
-import About from "./components/About";
-import Contact from "./components/Contact";
 import Register from "./components/Register";
 import Login from "./components/Login";
 import Alerts from "./components/Alerts";
@@ -35,8 +33,11 @@ function App() {
       <Navbar />
       <Switch>
         <Route exact path="/" render={() => <Welcome />} />
-        <Route exact path="/invite" render={() => <Invite />} />
-        <Route exact path="/contact" render={() => <Contact />} />
+        <Route
+          exact
+          path="/:projectName/:projectId/invite"
+          render={(props) => <Invite {...props} />}
+        />
         <Route exact path="/register" render={() => <Register />} />
         <Route exact path="/login" render={() => <Login />} />
         <PrivateRoute exact path="/dashboard" component={Dashboard} />

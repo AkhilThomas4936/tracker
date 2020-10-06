@@ -4,10 +4,13 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { getProjects } from "../actions/projects";
 import project1 from "../imgs/project.png";
+import noBug from "../imgs/noBug.svg";
 import team from "../imgs/team.svg";
+import AddIcon from "@material-ui/icons/Add";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import {
   Box,
+  Fab,
   Avatar,
   Grid,
   Container,
@@ -25,6 +28,10 @@ import {
   TableBody,
   Tooltip,
   Button,
+  Tab,
+  AppBar,
+  Toolbar,
+  Tabs,
 } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
@@ -41,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
   },
   avatar: {
     margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
+    backgroundColor: "#2e73bf",
   },
   heading: {
     color: "#1976d2",
@@ -52,6 +59,7 @@ const useStyles = makeStyles((theme) => ({
   img: {
     height: "2rem",
     width: "2.5rem",
+    marginRight: "3px",
   },
   container: {
     display: "inline-grid",
@@ -80,11 +88,14 @@ const useStyles = makeStyles((theme) => ({
     margin: 0,
     marginLeft: "2rem",
   },
+  noBug: {
+    height: "15rem",
+    width: "15rem",
+  },
 }));
 
 const Project = ({ project, projectId, getProjects }) => {
   useEffect(() => {
-    console.log("runs");
     getProjects();
   }, []);
   const classes = useStyles();
@@ -99,11 +110,17 @@ const Project = ({ project, projectId, getProjects }) => {
   }
 
   return (
-    <Container component="main" maxWidth="xl">
+    <Container component="main" maxWidth="xl" style={{ padding: 0 }}>
       <CssBaseline />
 
-      <Paper elevation={3} className={classes.paper}>
-        <Grid container style={{ marginLeft: "2rem" }}>
+      <div
+        style={{
+          padding: "3rem 1rem",
+          backgroundColor: "rgb(217, 226, 226)",
+          marginBottom: "2rem",
+        }}
+      >
+        <Grid container>
           <grid item>
             <img className={classes.img} src={project1} alt="project" />
           </grid>
@@ -119,9 +136,9 @@ const Project = ({ project, projectId, getProjects }) => {
                 style={{
                   marginLeft: "1rem",
                   marginTop: "0.3rem",
-                  padding: "0.1rem 1em",
+                  padding: "0.1em 1em",
                   color: "white",
-                  backgroundColor: "#2196f3",
+                  backgroundColor: "#2e73bf",
                   textTransform: "none",
                 }}
               >
@@ -130,7 +147,10 @@ const Project = ({ project, projectId, getProjects }) => {
             </Link>
           </Grid>
           <Grid item>
-            <Link to="/invite" style={{ textDecoration: "none" }}>
+            <Link
+              to={`/${project.projectName}/${projectId}/invite`}
+              style={{ textDecoration: "none" }}
+            >
               <Button
                 variant="contained"
                 style={{
@@ -138,7 +158,7 @@ const Project = ({ project, projectId, getProjects }) => {
                   marginTop: "0.3rem",
                   padding: "0.1em 1em",
                   color: "white",
-                  backgroundColor: "#f50057",
+                  backgroundColor: "#2e73bf",
                   textTransform: "none",
                 }}
               >
@@ -151,8 +171,15 @@ const Project = ({ project, projectId, getProjects }) => {
         <p className={classes.p}>{`Created by: ${
           project.createdBy.split("@")[0]
         }`}</p>
-        <Grid container className={classes.container}>
-          <Grid item>
+      </div>
+      <Grid container className={classes.container}>
+        <Grid item style={{ textAlign: "center", marginLeft: " 1rem" }}>
+          {project.bugs.length === 0 ? (
+            <div style={{ marginTop: "4rem" }}>
+              <img src={noBug} className={classes.noBug} />
+              <p>No bugs reported yet</p>
+            </div>
+          ) : (
             <TableContainer component={Paper}>
               <Table className={classes.table} aria-label="simple table">
                 <TableHead>
@@ -190,55 +217,35 @@ const Project = ({ project, projectId, getProjects }) => {
                       <TableCell align="center">{bug.createdBy}</TableCell>
                       <TableCell align="center">{bug.status}</TableCell>
                       <TableCell align="center">{bug.assignedTo}</TableCell>
-                      <TableCell align="right">
-                        {
-                          <Link
-                            to={`/${projectId}/${index}`}
-                            style={{ textDecoration: "none" }}
-                          >
-                            <Button
-                              variant="contained"
-                              style={{
-                                padding: "0.1em 3em",
-                                color: "white",
-                                backgroundColor: "#3cb371",
-                                textTransform: "none",
-                              }}
-                            >
-                              View
-                            </Button>
-                          </Link>
-                        }
-                      </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
               </Table>
             </TableContainer>
-          </Grid>
-          <Grid item>
-            <Paper style={{ paddingTop: "1rem" }} elevation={2}>
-              <Box style={{ textAlign: "center" }} letterSpacing={2}>
-                <strong> TEAM MEMBERS</strong>
-              </Box>
-              <ul>
-                {project.teamMembers.map((member, index) => (
-                  <li className={classes.li} key={index}>
-                    <Grid container>
-                      <Grid item>
-                        <Avatar className={classes.avatar}></Avatar>
-                      </Grid>
-                      <Grid item>
-                        <p style={{ color: "black" }}>{member.split("@")[0]}</p>
-                      </Grid>
-                    </Grid>
-                  </li>
-                ))}
-              </ul>
-            </Paper>
-          </Grid>
+          )}
         </Grid>
-      </Paper>
+        <Grid item style={{ marginRight: " 1rem" }}>
+          <Paper style={{ padding: "1rem 0" }} elevation={2}>
+            <Box style={{ textAlign: "center" }} letterSpacing={2}>
+              <strong> TEAM MEMBERS</strong>
+            </Box>
+            <ul>
+              {project.teamMembers.map((member, index) => (
+                <li className={classes.li} key={index}>
+                  <Grid container>
+                    <Grid item>
+                      <Avatar className={classes.avatar}></Avatar>
+                    </Grid>
+                    <Grid item>
+                      <p style={{ color: "black" }}>{member.split("@")[0]}</p>
+                    </Grid>
+                  </Grid>
+                </li>
+              ))}
+            </ul>
+          </Paper>
+        </Grid>
+      </Grid>
     </Container>
   );
 };

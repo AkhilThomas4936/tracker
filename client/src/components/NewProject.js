@@ -1,8 +1,9 @@
 import React from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import { useForm } from "react-hook-form";
-// import { Link, Redirect } from "react-router-dom";
+import { Redirect, useHistory } from "react-router-dom";
 import { connect } from "react-redux";
+
 // import { registerUser } from "../actions/auth";
 // import PropTypes from "prop-types";
 import "date-fns";
@@ -52,10 +53,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const NewProject = ({ auth, addProject }) => {
+const NewProject = ({ auth, addProject, toId }) => {
   const [selectedDateFrom, setSelectedDateFrom] = React.useState(new Date());
   const [selectedDateTo, setSelectedDateTo] = React.useState(new Date());
   const { register, handleSubmit, errors } = useForm();
+  const history = useHistory();
 
   const handleDateChangeFrom = (date) => {
     setSelectedDateFrom(date);
@@ -73,9 +75,9 @@ const NewProject = ({ auth, addProject }) => {
       from: selectedDateFrom,
       to: selectedDateTo,
     };
-    console.log(payload);
-    addProject(payload);
+    addProject(payload, history, toId);
   };
+
   return (
     <Container component="main" maxWidth="sm">
       <CssBaseline />
@@ -150,7 +152,6 @@ const NewProject = ({ auth, addProject }) => {
           </MuiPickersUtilsProvider>
 
           <Button
-            // onClick={onClick}
             type="submit"
             fullWidth
             variant="contained"
@@ -169,8 +170,17 @@ NewProject.propTypes = {};
 
 function mapStateToProps(state) {
   const { auth } = state;
+  const { yourProjects } = state.projects;
+  let toId;
+  if (yourProjects === false) {
+    toId = 0;
+  } else {
+    toId = yourProjects.length;
+  }
+
   return {
     auth,
+    toId,
   };
 }
 

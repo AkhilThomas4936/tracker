@@ -1,5 +1,8 @@
 import React, { Fragment } from "react";
+import { connect } from "react-redux";
+import { useHistory } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { addTeam } from "../actions/projects";
 import HighlightOffIcon from "@material-ui/icons/HighlightOff";
 // import team from "../imgs/team.svg";
 import {
@@ -18,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
   paper: {
     padding: "2rem",
     paddingBottom: "4rem",
-    marginTop: theme.spacing(1),
+    marginTop: "3rem",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
@@ -54,19 +57,19 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Invite() {
+function Invite({ addTeam, projectName, projectId }) {
   const classes = useStyles();
 
   const [indexes, setIndexes] = React.useState([0]);
   const [counter, setCounter] = React.useState(1000);
   const { register, handleSubmit, errors } = useForm();
+  const history = useHistory();
 
   const onSubmit = (data) => {
     const team = [];
     const { friends } = data;
-    // console.log(friends);
     friends.map((friend) => team.push(friend.email));
-    console.log(team);
+    addTeam(projectName, team, history, projectId);
   };
 
   const addFriend = () => {
@@ -174,5 +177,13 @@ function Invite() {
     </Container>
   );
 }
+function mapStateToProps(state, { match }) {
+  const { projectName, projectId } = match.params;
 
-export default Invite;
+  return {
+    projectName,
+    projectId,
+  };
+}
+
+export default connect(mapStateToProps, { addTeam })(Invite);

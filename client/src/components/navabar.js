@@ -7,7 +7,6 @@ import { makeStyles, useTheme } from "@material-ui/styles";
 import bear from "../imgs/bear.png";
 // import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import {
-  // Avatar,
   Paper,
   Tab,
   AppBar,
@@ -40,7 +39,7 @@ function ElevationScroll(props) {
 const useStyles = makeStyles((theme) => ({
   toolbarMargin: {
     ...theme.mixins.toolbar,
-    marginBottom: "3em",
+    marginBottom: "0.5em",
     [theme.breakpoints.down("xs")]: {
       marginBottom: "1.5em",
     },
@@ -85,7 +84,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Navbar({ isAuthenticated, loading, logout }) {
+function Navbar({ isAuthenticated, loading, logout, username }) {
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.down("md"));
   // const matchesXs = useMediaQuery(theme.breakpoints.down("xs"));
@@ -117,24 +116,22 @@ function Navbar({ isAuthenticated, loading, logout }) {
         indicatorColor="primary"
       >
         <Tab component={Link} to="/" className={classes.tab} label="Home" />
-        <Tab
-          component={Link}
-          to="/about"
-          className={classes.tab}
-          label="About"
-        />
-        <Tab
-          component={Link}
-          to="/contact"
-          className={classes.tab}
-          label="Contact"
-        />
+
         {!loading && isAuthenticated && (
           <Tab
             component={Link}
             to="/dashboard"
             className={classes.tab}
             label="Dashboard"
+          />
+        )}
+        {!loading && isAuthenticated && (
+          <Tab
+            disabled
+            component={Link}
+            to="/dashboard"
+            className={classes.tab}
+            label={`Hi ${username}`}
           />
         )}
         {!loading && isAuthenticated && (
@@ -288,9 +285,12 @@ Navbar.propTypes = {
 
 function mapStateToProps(state) {
   const { isAuthenticated, loading } = state.auth;
+  const { username } = state.auth;
+
   return {
     isAuthenticated,
     loading,
+    username,
   };
 }
 export default connect(mapStateToProps, { logout })(Navbar);
