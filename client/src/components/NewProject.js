@@ -48,8 +48,8 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(3, 0, 2),
   },
   icon: {
-    height: "2.5rem",
-    width: "2.5rem",
+    height: "3rem",
+    width: "3rem",
   },
 }));
 

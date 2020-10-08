@@ -53,9 +53,9 @@ const useStyles = makeStyles((theme) => ({
   heading: {
     color: "#1976d2",
   },
-  team: {
-    float: "left",
-  },
+  // team: {
+  //   float: "left",
+  // },
   img: {
     height: "2rem",
     width: "2.5rem",
@@ -121,16 +121,19 @@ const Project = ({ project, projectId, getProjects }) => {
         }}
       >
         <Grid container>
-          <grid item>
+          <Grid item>
             <img className={classes.img} src={project1} alt="project" />
-          </grid>
+          </Grid>
           <Grid item>
             <Typography component="h1" variant="h5" className={classes.heading}>
               <strong>{project.projectName}</strong>
             </Typography>
           </Grid>
           <Grid item>
-            <Link style={{ textDecoration: "none" }}>
+            <Link
+              style={{ textDecoration: "none" }}
+              to={`/${projectId}/newBug`}
+            >
               <Button
                 variant="contained"
                 style={{
@@ -173,7 +176,7 @@ const Project = ({ project, projectId, getProjects }) => {
         }`}</p>
       </div>
       <Grid container className={classes.container}>
-        <Grid item style={{ textAlign: "center", marginLeft: " 1rem" }}>
+        <Grid xs={12} item style={{ textAlign: "center", marginLeft: " 1rem" }}>
           {project.bugs.length === 0 ? (
             <div style={{ marginTop: "4rem" }}>
               <img src={noBug} className={classes.noBug} />
@@ -202,7 +205,7 @@ const Project = ({ project, projectId, getProjects }) => {
 
                 <TableBody>
                   {project.bugs.map((bug, index) => (
-                    <TableRow key={project.projectName}>
+                    <TableRow key={index}>
                       <TableCell component="th" scope="row">
                         <Link
                           to={`/${projectId}/${index}`}
@@ -224,7 +227,7 @@ const Project = ({ project, projectId, getProjects }) => {
             </TableContainer>
           )}
         </Grid>
-        <Grid item style={{ marginRight: " 1rem" }}>
+        <Grid item style={{ marginRight: " 1rem" }} xs={12}>
           <Paper style={{ padding: "1rem 0" }} elevation={2}>
             <Box style={{ textAlign: "center" }} letterSpacing={2}>
               <strong> TEAM MEMBERS</strong>
@@ -251,7 +254,7 @@ const Project = ({ project, projectId, getProjects }) => {
 };
 
 Project.propTypes = {
-  project: PropTypes.object.isRequired,
+  project: PropTypes.object,
 };
 
 function mapStateToProps(state, { match }) {

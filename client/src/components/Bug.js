@@ -41,7 +41,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Bug = ({ projectId, project, bugId, getProjects, loadUser, email }) => {
+const Bug = ({
+  projectId,
+  project,
+  bugId,
+  getProjects,
+  loadUser,
+  email,
+  bug,
+}) => {
   const classes = useStyles();
 
   useEffect(() => {
@@ -49,7 +57,7 @@ const Bug = ({ projectId, project, bugId, getProjects, loadUser, email }) => {
   }, []);
 
   const Status = ["Open", "In progress", "closed"];
-  if (!project) {
+  if (!bug) {
     return (
       <div>
         <h1>Loading ...</h1>
@@ -120,6 +128,10 @@ function mapStateToProps(state, { match }) {
   const { projectId, bugId } = match.params;
   const { yourProjects } = state.projects;
   const project = yourProjects[projectId];
+  let bug;
+  if (project) {
+    bug = project.bugs[bugId];
+  }
   const email = state.auth.email;
 
   return {
@@ -127,6 +139,7 @@ function mapStateToProps(state, { match }) {
     bugId,
     project,
     email,
+    bug,
   };
 }
 

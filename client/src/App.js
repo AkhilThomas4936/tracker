@@ -18,6 +18,7 @@ import NewProject from "./components/NewProject";
 import Invite from "./components/Invite";
 import Project from "./components/Project";
 import Bug from "./components/Bug";
+import NewBug from "./components/NewBug";
 
 if (localStorage.token) {
   setAuthToken(localStorage.token);
@@ -40,6 +41,12 @@ function App() {
         />
         <Route exact path="/register" render={() => <Register />} />
         <Route exact path="/login" render={() => <Login />} />
+        <Route
+          exact
+          path="/:projectId/newBug"
+          render={(props) => <NewBug {...props} />}
+        />
+
         <PrivateRoute exact path="/dashboard" component={Dashboard} />
         <PrivateRoute exact path="/add" component={NewProject} />
         <Route
