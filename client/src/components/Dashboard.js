@@ -4,14 +4,12 @@ import { getProjects } from "../actions/projects";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import noProjects from "../imgs/noProjects.svg";
-import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 
 import {
   Paper,
   Grid,
   Typography,
   Box,
-  Avatar,
   makeStyles,
   Button,
   Table,
@@ -20,7 +18,6 @@ import {
   TableHead,
   TableRow,
   TableBody,
-  Tooltip,
   Container,
 } from "@material-ui/core";
 

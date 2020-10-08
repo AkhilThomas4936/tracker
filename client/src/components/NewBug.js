@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { useHistory } from "react-router-dom";
-import PropTypes from "prop-types";
+// import PropTypes from "prop-types";
 import bugImage from "../imgs/bug.png";
 import { connect } from "react-redux";
 import { getProjects } from "../actions/projects";
@@ -9,7 +9,6 @@ import { addBug } from "../actions/bug";
 
 import {
   FormControl,
-  Avatar,
   Button,
   CssBaseline,
   TextField,
@@ -22,7 +21,7 @@ import {
   withStyles,
 } from "@material-ui/core";
 
-const statusList = ["Open", "In progress", "Closed"];
+const statusList = ["Open", "In progress"];
 
 const BootstrapInput = withStyles((theme) => ({
   root: {
@@ -224,6 +223,7 @@ const NewBug = ({
             <NativeSelect
               input={<BootstrapInput />}
               fullWidth
+              value={email}
               onChange={(e) => handleChangeTo(e)}
               placeholder="Assigned to"
             >

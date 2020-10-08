@@ -4,7 +4,6 @@ import { useHistory } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { addTeam } from "../actions/projects";
 import HighlightOffIcon from "@material-ui/icons/HighlightOff";
-// import team from "../imgs/team.svg";
 import {
   Avatar,
   Button,

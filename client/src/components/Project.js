@@ -5,12 +5,8 @@ import PropTypes from "prop-types";
 import { getProjects } from "../actions/projects";
 import project1 from "../imgs/project.png";
 import noBug from "../imgs/noBug.svg";
-import team from "../imgs/team.svg";
-import AddIcon from "@material-ui/icons/Add";
-import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import {
   Box,
-  Fab,
   Avatar,
   Grid,
   Container,
@@ -19,19 +15,14 @@ import {
   Paper,
   Typography,
   LinearProgress,
-  ButtonBase,
   Table,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
   TableBody,
-  Tooltip,
   Button,
-  Tab,
-  AppBar,
-  Toolbar,
-  Tabs,
+  Chip,
 } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
@@ -218,7 +209,49 @@ const Project = ({ project, projectId, getProjects }) => {
                         </Link>
                       </TableCell>
                       <TableCell align="center">{bug.createdBy}</TableCell>
-                      <TableCell align="center">{bug.status}</TableCell>
+                      <TableCell align="center">
+                        {(() => {
+                          if (bug.status === "Open") {
+                            return (
+                              <Chip
+                                label={bug.status}
+                                style={{
+                                  backgroundColor: "MediumSeagreen",
+                                  color: "white",
+                                  width: "100px",
+                                  // padding: "1rem 2rem",
+                                }}
+                              />
+                            );
+                          } else if (bug.status === "In progress") {
+                            return (
+                              <Chip
+                                label={bug.status}
+                                style={{
+                                  backgroundColor: "Tomato",
+                                  color: "white",
+                                  width: "100px",
+
+                                  // padding: "1rem 2rem",
+                                }}
+                              />
+                            );
+                          } else {
+                            return (
+                              <Chip
+                                label={bug.status}
+                                style={{
+                                  backgroundColor: "SlateBlue",
+                                  color: "white",
+                                  width: "100px",
+
+                                  // padding: "1rem 2rem",
+                                }}
+                              />
+                            );
+                          }
+                        })()}
+                      </TableCell>
                       <TableCell align="center">{bug.assignedTo}</TableCell>
                     </TableRow>
                   ))}

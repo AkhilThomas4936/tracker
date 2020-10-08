@@ -5,7 +5,6 @@ import { logout } from "../actions/auth";
 import PropTypes from "prop-types";
 import { makeStyles, useTheme } from "@material-ui/styles";
 import bear from "../imgs/bear.png";
-// import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import {
   Paper,
   Tab,

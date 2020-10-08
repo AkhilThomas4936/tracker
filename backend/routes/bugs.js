@@ -49,22 +49,45 @@ router.post("/add", auth, async (req, res) => {
 
 //To add more comments
 
-router.put("/comments/:projectName/:bugId", auth, async (req, res) => {
-  newComment = req.body.comment;
+router.put("/status", auth, async (req, res) => {
+  status = req.body.status;
+  projectName = req.body.projectName;
+  bugId = req.body.bugId;
 
   try {
     const toTheProject = await Project.findOne({
-      projectName: req.params.projectName,
+      projectName: projectName,
     });
-    const toTheBug = toTheProject.bugs.filter(
-      (bug) => bug.id === req.params.bugId
-    );
+    const toTheBug = toTheProject.bugs.filter((bug) => bug.id === bugId);
     const [bug] = toTheBug;
 
-    bug.comments.unshift(newComment);
+    bug.status = status;
     await toTheProject.save();
 
-    res.send("New comment added successfully");
+    res.send("Status changed");
+  } catch (err) {
+    res.status(500).send("Server Error");
+  }
+});
+
+//Updating assignedTo
+
+router.put("/assignedTo", auth, async (req, res) => {
+  assignedTo = req.body.assignedTo;
+  projectName = req.body.projectName;
+  bugId = req.body.bugId;
+
+  try {
+    const toTheProject = await Project.findOne({
+      projectName: projectName,
+    });
+    const toTheBug = toTheProject.bugs.filter((bug) => bug.id === bugId);
+    const [bug] = toTheBug;
+
+    bug.assignedTo = assignedTo;
+    await toTheProject.save();
+
+    res.send("assigned to changed");
   } catch (err) {
     res.status(500).send("Server Error");
   }

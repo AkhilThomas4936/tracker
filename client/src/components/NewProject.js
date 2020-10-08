@@ -1,14 +1,12 @@
 import React from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import { useForm } from "react-hook-form";
-import { Redirect, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { connect } from "react-redux";
-
-// import { registerUser } from "../actions/auth";
+import projectImage from "../imgs/project.png";
 // import PropTypes from "prop-types";
 import "date-fns";
 import DateFnsUtils from "@date-io/date-fns";
-import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
@@ -82,9 +80,11 @@ const NewProject = ({ auth, addProject, toId }) => {
     <Container component="main" maxWidth="sm">
       <CssBaseline />
       <Paper elevation={3} className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <AddCircleOutlineIcon className={classes.icon} />
-        </Avatar>
+        <img
+          src={projectImage}
+          style={{ height: "3.5rem", width: "3.5rem" }}
+          alt="project"
+        />
         <Typography component="h1" variant="h5">
           Create Project
         </Typography>
@@ -122,6 +122,7 @@ const NewProject = ({ auth, addProject, toId }) => {
               <KeyboardDatePicker
                 inputRef={register}
                 margin="normal"
+                name="from"
                 id="date-picker-dialog"
                 label="Start date of the project"
                 format="MM/dd/yyyy"
@@ -139,6 +140,7 @@ const NewProject = ({ auth, addProject, toId }) => {
               <KeyboardDatePicker
                 inputRef={register}
                 margin="normal"
+                name="to"
                 id="date-picker-dialog"
                 label="End date of the project"
                 format="MM/dd/yyyy"
