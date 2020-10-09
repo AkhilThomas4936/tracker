@@ -77,7 +77,7 @@ router.post(
 //Deleting the user
 router.delete("/delete", auth, async (req, res) => {
   try {
-    console.log(req.user.email);
+    // console.log(req.user.email);
     await User.findOneAndRemove({ email: req.user.email });
 
     res.json("User deleted");

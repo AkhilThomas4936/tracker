@@ -191,7 +191,7 @@ function Register({ registerUser, isAuthenticated }) {
 }
 
 Register.propTypes = {
-  setAlert: PropTypes.func.isRequired,
+  setAlert: PropTypes.func,
   registerUser: PropTypes.func.isRequired,
   isAuthenticated: PropTypes.bool,
 };

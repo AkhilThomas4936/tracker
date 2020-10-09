@@ -111,7 +111,7 @@ router.delete("/delete/:projectName", auth, async (req, res) => {
     });
     res.send("Project Deleted");
   } catch (err) {
-    console.error(err.message);
+    // console.error(err.message);
     res.status(500).send("Server Error");
   }
 });

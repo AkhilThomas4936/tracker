@@ -1,9 +1,6 @@
 import { setAlert } from "./alert";
 import axios from "axios";
 
-export const ADD_BUG = "ADD_BUG";
-export const CHANGE_STATUS = "CHANGE_STATUS";
-
 export const addBug = (
   payload,
   history,

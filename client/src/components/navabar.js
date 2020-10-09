@@ -18,6 +18,8 @@ import {
   List,
   ListItem,
   ListItemText,
+  Avatar,
+  Grid,
 } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
 
@@ -81,6 +83,20 @@ const useStyles = makeStyles((theme) => ({
   drawerItem: {
     fontSize: "1.5em",
   },
+  orange: {
+    color: "white",
+    backgroundColor: "purple",
+  },
+  container: {
+    display: "inlineGrid",
+    gridGap: "3px",
+  },
+  item: {
+    display: " flex",
+    justifyContent: " center",
+    alignItems: "center",
+    fontSize: "1em",
+  },
 }));
 
 function Navbar({ isAuthenticated, loading, logout, username }) {
@@ -116,23 +132,29 @@ function Navbar({ isAuthenticated, loading, logout, username }) {
       >
         <Tab component={Link} to="/" className={classes.tab} label="Home" />
 
-        {!loading && isAuthenticated && (
+        {/* {!loading && isAuthenticated && (
           <Tab
             component={Link}
             to="/dashboard"
             className={classes.tab}
             label="Dashboard"
           />
-        )}
-        {!loading && isAuthenticated && (
+        )} */}
+        {!loading && isAuthenticated && username && (
           <Tab
             disabled
-            component={Link}
-            to="/dashboard"
             className={classes.tab}
-            label={`Hi ${username}`}
+            label={
+              <Grid container className={classes.container}>
+                <Grid item className={classes.item}>
+                  <Avatar className={classes.orange}>{username[0]} </Avatar>
+                </Grid>
+                <Grid item className={classes.item}>{`Hi ${username}`}</Grid>
+              </Grid>
+            }
           />
         )}
+
         {!loading && isAuthenticated && (
           <Tab
             onClick={() => {
@@ -258,12 +280,14 @@ function Navbar({ isAuthenticated, loading, logout, username }) {
           <Paper elevation={10}>
             <Toolbar>
               <Link to="/" style={{ textDecoration: "none" }}>
+                {/* <Grid container className={classes.container}>
+                  <Grid item classname={classes.item}> */}
                 <img src={bear} className={classes.logo} alt="logo" />
-                {/* {matchesXs ? (
-                  <h2 className={classes.fixit}>FixIt</h2>
-                ) : (
-                  <h1 className={classes.fixit}>FixIt</h1>
-                )} */}
+                {/* </Grid>
+                  <Grid item className={classes.item}>
+                    <h1>FixIt</h1>
+                  </Grid>
+                </Grid> */}
               </Link>
 
               {matches ? drawer : tabs}

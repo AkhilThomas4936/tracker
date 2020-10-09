@@ -1,4 +1,5 @@
 import React, { Fragment } from "react";
+import { connect } from "react-redux";
 import homeView from "../imgs/homeView.svg";
 import { Link } from "react-router-dom";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
@@ -53,7 +54,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Welcome() {
+function Welcome({ isAuthenticated, loading }) {
   const theme = useTheme();
   const classes = useStyles();
 
@@ -82,18 +83,28 @@ function Welcome() {
               </h2>
             )}
 
-            <div className={classes.root}>
-              <Link to="/register" style={{ textDecoration: "none" }}>
-                <Button variant="contained" className={classes.btn}>
-                  <strong>Sign Up</strong>
-                </Button>
-              </Link>
-              <Link to="/login" style={{ textDecoration: "none" }}>
-                <Button variant="contained" className={classes.btn}>
-                  <strong> Sign In</strong>
-                </Button>
-              </Link>
-            </div>
+            {!isAuthenticated && !loading ? (
+              <div className={classes.root}>
+                <Link to="/register" style={{ textDecoration: "none" }}>
+                  <Button variant="contained" className={classes.btn}>
+                    <strong>Sign Up</strong>
+                  </Button>
+                </Link>
+                <Link style={{ textDecoration: "none" }} to="/login">
+                  <Button variant="contained" className={classes.btn}>
+                    <strong> Sign In</strong>
+                  </Button>
+                </Link>
+              </div>
+            ) : (
+              <div className={classes.root}>
+                <Link style={{ textDecoration: "none" }} to="/dashboard">
+                  <Button variant="contained" className={classes.btn}>
+                    <strong> Dashboard</strong>
+                  </Button>
+                </Link>
+              </div>
+            )}
           </div>
         </Grid>
       </Grid>
@@ -110,19 +121,28 @@ function Welcome() {
               and distribute tasks <br />
               across your software team.
             </h1>
-
-            <div className={classes.root}>
-              <Link to="/register" style={{ textDecoration: "none" }}>
-                <Button variant="contained" className={classes.btn}>
-                  <strong>Sign Up</strong>
-                </Button>
-              </Link>
-              <Link style={{ textDecoration: "none" }} to="/login">
-                <Button variant="contained" className={classes.btn}>
-                  <strong> Sign In</strong>
-                </Button>
-              </Link>
-            </div>
+            {!isAuthenticated && !loading ? (
+              <div className={classes.root}>
+                <Link to="/register" style={{ textDecoration: "none" }}>
+                  <Button variant="contained" className={classes.btn}>
+                    <strong>Sign Up</strong>
+                  </Button>
+                </Link>
+                <Link style={{ textDecoration: "none" }} to="/login">
+                  <Button variant="contained" className={classes.btn}>
+                    <strong> Sign In</strong>
+                  </Button>
+                </Link>
+              </div>
+            ) : (
+              <div className={classes.root}>
+                <Link style={{ textDecoration: "none" }} to="/dashboard">
+                  <Button variant="contained" className={classes.btn}>
+                    <strong> Dashboard</strong>
+                  </Button>
+                </Link>
+              </div>
+            )}
           </div>
         </Grid>
         <Grid item className={classes.gridItem}>
@@ -133,4 +153,13 @@ function Welcome() {
   );
   return <div>{matchesSm ? gridSm : gridNormal}</div>;
 }
-export default Welcome;
+
+function mapStateToProps(state) {
+  const { isAuthenticated, loading } = state.auth;
+
+  return {
+    isAuthenticated,
+    loading,
+  };
+}
+export default connect(mapStateToProps)(Welcome);

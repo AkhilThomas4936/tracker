@@ -4,7 +4,6 @@ import { useForm } from "react-hook-form";
 import { useHistory } from "react-router-dom";
 import { connect } from "react-redux";
 import projectImage from "../imgs/project.png";
-// import PropTypes from "prop-types";
 import "date-fns";
 import DateFnsUtils from "@date-io/date-fns";
 import {
@@ -14,7 +13,6 @@ import {
 import { addProject } from "../actions/projects";
 
 import {
-  Avatar,
   Button,
   CssBaseline,
   TextField,

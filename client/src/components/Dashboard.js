@@ -19,6 +19,7 @@ import {
   TableRow,
   TableBody,
   Container,
+  LinearProgress,
 } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
@@ -64,6 +65,9 @@ const useStyles = makeStyles((theme) => ({
   //   fontSize: "1.2rem",
   //   padding: 0,
   // },
+  heading: {
+    color: "#1976d2",
+  },
 }));
 
 function Dashboard({ getProjects, yourProjects, loading }) {
@@ -71,7 +75,16 @@ function Dashboard({ getProjects, yourProjects, loading }) {
 
   useEffect(() => {
     getProjects();
-  }, []);
+  }, [getProjects]);
+
+  if (loading) {
+    return (
+      <div>
+        <h1>Loading...</h1>
+        <LinearProgress color="secondary"></LinearProgress>
+      </div>
+    );
+  }
 
   if (yourProjects === false) {
     return (
@@ -109,12 +122,12 @@ function Dashboard({ getProjects, yourProjects, loading }) {
   return (
     <Container component="main" maxWidth="xl" style={{ padding: 0 }}>
       <div
-        style={{ backgroundColor: " rgb(217, 226, 226)", padding: "2rem 3rem" }}
+        style={{ backgroundColor: " rgb(217, 226, 226)", padding: "2rem 1rem" }}
       >
         <Grid container>
-          <Grid item className={classes.item}>
+          <Grid item>
             <Typography component="h1" variant="h4" className={classes.heading}>
-              <strong>Current projects</strong>
+              <strong>Current projects you are in...</strong>
             </Typography>
           </Grid>
           <Grid item style={{ float: "right" }}>

@@ -1,6 +1,7 @@
 const router = require("express").Router();
 let Project = require("../models/projects.model");
 const auth = require("./middleware/auth");
+let mail = require("../mailer");
 
 router.get("/", async (req, res) => {
   let result = await Project.findOne({
@@ -41,6 +42,8 @@ router.post("/add", auth, async (req, res) => {
     });
     toProject.bugs.unshift(newBug);
     await toProject.save();
+    await mail(assignedTo);
+
     res.send("Bug added successfully");
   } catch (err) {
     res.status(400).json("Error:" + err);
@@ -86,6 +89,7 @@ router.put("/assignedTo", auth, async (req, res) => {
 
     bug.assignedTo = assignedTo;
     await toTheProject.save();
+    await mail(assignedTo);
 
     res.send("assigned to changed");
   } catch (err) {

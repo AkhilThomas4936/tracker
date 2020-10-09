@@ -5,7 +5,6 @@ import { getProjects } from "../actions/projects";
 import { changeStatus, changeAssignedTo } from "../actions/bug";
 // import PropTypes from "prop-types";
 import bugImage from "../imgs/bug.png";
-
 import {
   Typography,
   LinearProgress,
@@ -64,16 +63,14 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   img: {
-    height: "2rem",
-    width: "2.5rem",
+    height: "4rem",
+    width: "4rem",
   },
   heading: {
     color: "#1976d2",
     textTransform: "capitalize",
   },
-  item: {
-    marginRight: "1rem",
-  },
+
   container1: {
     display: "inlineGrid",
     gridGap: "3px",
@@ -99,7 +96,7 @@ const Bug = ({
 }) => {
   useEffect(() => {
     getProjects();
-  }, []);
+  }, [getProjects]);
 
   const classes = useStyles();
   const history = useHistory();
@@ -131,7 +128,7 @@ const Bug = ({
   if (status === "Open") {
     chip = (
       <Chip
-        label={status}
+        label={<strong>{status}</strong>}
         style={{
           backgroundColor: "MediumSeaGreen",
           color: "white",
@@ -142,7 +139,7 @@ const Bug = ({
   } else if (status === "In progress") {
     chip = (
       <Chip
-        label={status}
+        label={<strong>{status}</strong>}
         style={{
           backgroundColor: "Tomato",
           color: "white",
@@ -153,7 +150,7 @@ const Bug = ({
   } else {
     chip = (
       <Chip
-        label={status}
+        label={<strong>{status}</strong>}
         style={{
           backgroundColor: "SlateBlue",
           color: "white",
@@ -179,24 +176,25 @@ const Bug = ({
         style={{ backgroundColor: " rgb(217, 226, 226)", padding: "2rem 3rem" }}
       >
         <Grid container>
-          <Grid item className={classes.item}>
+          <Grid item className={classes.item1}>
             <img className={classes.img} src={bugImage} alt="bug" />
           </Grid>
-          <Grid item className={classes.item}>
-            <Paper style={{ padding: "0.2rem 2rem" }}>
-              <Typography
-                component="h1"
-                variant="h5"
-                className={classes.heading}
-              >
-                <strong>{project.bugs[bugId].title}</strong>
-              </Typography>
-            </Paper>
+          <Grid item className={classes.item1}>
+            <Typography component="h1" variant="h5" className={classes.heading}>
+              <strong>{project.bugs[bugId].title}</strong>
+            </Typography>
           </Grid>
         </Grid>
-        <p>{`by ${project.bugs[bugId].createdBy} on ${
-          project.bugs[bugId].date.split("T")[0]
-        }`}</p>
+        <p>
+          {`by ${project.bugs[bugId].createdBy} on ${
+            project.bugs[bugId].date.split("T")[0]
+          }`}
+          {/* {email === project.bugs[bugId].createdBy && (
+            <DeleteIcon
+              style={{ float: "right", cursor: "pointer" }}
+            ></DeleteIcon>
+          )} */}
+        </p>
       </div>
       <Paper elevation={3} className={classes.paper}>
         <h4>Expected result :</h4>

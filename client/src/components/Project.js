@@ -23,6 +23,8 @@ import {
   TableBody,
   Button,
   Chip,
+  useMediaQuery,
+  useTheme,
 } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
@@ -58,6 +60,10 @@ const useStyles = makeStyles((theme) => ({
     gridTemplateColumns: "4fr 1fr",
     gridAutoFlow: "column",
     gridGap: "15px",
+    [theme.breakpoints.down("sm")]: {
+      gridTemplateRows: "1fr 1fr ",
+      gridTemplateColumns: "1fr 1fr",
+    },
   },
   item: {
     display: "flex",
@@ -88,8 +94,10 @@ const useStyles = makeStyles((theme) => ({
 const Project = ({ project, projectId, getProjects }) => {
   useEffect(() => {
     getProjects();
-  }, []);
+  }, [getProjects]);
   const classes = useStyles();
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.down("xs"));
 
   if (!project) {
     return (
@@ -167,10 +175,10 @@ const Project = ({ project, projectId, getProjects }) => {
         }`}</p>
       </div>
       <Grid container className={classes.container}>
-        <Grid xs={12} item style={{ textAlign: "center", marginLeft: " 1rem" }}>
+        <Grid item style={{ textAlign: "center", marginLeft: " 1rem" }}>
           {project.bugs.length === 0 ? (
             <div style={{ marginTop: "4rem" }}>
-              <img src={noBug} className={classes.noBug} />
+              <img src={noBug} className={classes.noBug} alt="noBug" />
               <p>No bugs reported yet</p>
             </div>
           ) : (
@@ -182,15 +190,19 @@ const Project = ({ project, projectId, getProjects }) => {
                       {" "}
                       <Box letterSpacing={2}>BUG</Box>
                     </TableCell>
+
                     <TableCell className={classes.tableHead} align="center">
                       <Box letterSpacing={2}>REPORTED BY</Box>
                     </TableCell>
+
                     <TableCell className={classes.tableHead} align="center">
                       <Box letterSpacing={2}>STATUS</Box>
                     </TableCell>
-                    <TableCell className={classes.tableHead} align="center">
-                      <Box letterSpacing={2}>ASSIGNED TO</Box>
-                    </TableCell>
+                    {!matches && (
+                      <TableCell className={classes.tableHead} align="center">
+                        <Box letterSpacing={2}>ASSIGNED TO</Box>
+                      </TableCell>
+                    )}
                   </TableRow>
                 </TableHead>
 
@@ -208,13 +220,15 @@ const Project = ({ project, projectId, getProjects }) => {
                           {bug.title}
                         </Link>
                       </TableCell>
+
                       <TableCell align="center">{bug.createdBy}</TableCell>
+
                       <TableCell align="center">
                         {(() => {
                           if (bug.status === "Open") {
                             return (
                               <Chip
-                                label={bug.status}
+                                label={<strong>{bug.status}</strong>}
                                 style={{
                                   backgroundColor: "MediumSeagreen",
                                   color: "white",
@@ -226,7 +240,7 @@ const Project = ({ project, projectId, getProjects }) => {
                           } else if (bug.status === "In progress") {
                             return (
                               <Chip
-                                label={bug.status}
+                                label={<strong>{bug.status}</strong>}
                                 style={{
                                   backgroundColor: "Tomato",
                                   color: "white",
@@ -239,7 +253,7 @@ const Project = ({ project, projectId, getProjects }) => {
                           } else {
                             return (
                               <Chip
-                                label={bug.status}
+                                label={<strong>{bug.status}</strong>}
                                 style={{
                                   backgroundColor: "SlateBlue",
                                   color: "white",
@@ -252,7 +266,9 @@ const Project = ({ project, projectId, getProjects }) => {
                           }
                         })()}
                       </TableCell>
-                      <TableCell align="center">{bug.assignedTo}</TableCell>
+                      {!matches && (
+                        <TableCell align="center">{bug.assignedTo}</TableCell>
+                      )}
                     </TableRow>
                   ))}
                 </TableBody>
@@ -260,27 +276,35 @@ const Project = ({ project, projectId, getProjects }) => {
             </TableContainer>
           )}
         </Grid>
-        <Grid item style={{ marginRight: " 1rem" }} xs={12}>
-          <Paper style={{ padding: "1rem 0" }} elevation={2}>
-            <Box style={{ textAlign: "center" }} letterSpacing={2}>
-              <strong> TEAM MEMBERS</strong>
-            </Box>
-            <ul>
-              {project.teamMembers.map((member, index) => (
-                <li className={classes.li} key={index}>
-                  <Grid container>
-                    <Grid item>
-                      <Avatar className={classes.avatar}></Avatar>
+        {!matches && (
+          <Grid
+            item
+            style={{
+              marginRight: " 1rem",
+              marginLeft: "1rem",
+            }}
+          >
+            <Paper style={{ padding: "1rem 0" }} elevation={2}>
+              <Box style={{ textAlign: "center" }} letterSpacing={2}>
+                <strong> TEAM MEMBERS</strong>
+              </Box>
+              <ul>
+                {project.teamMembers.map((member, index) => (
+                  <li className={classes.li} key={index}>
+                    <Grid container>
+                      <Grid item>
+                        <Avatar className={classes.avatar}></Avatar>
+                      </Grid>
+                      <Grid item>
+                        <p style={{ color: "black" }}>{member.split("@")[0]}</p>
+                      </Grid>
                     </Grid>
-                    <Grid item>
-                      <p style={{ color: "black" }}>{member.split("@")[0]}</p>
-                    </Grid>
-                  </Grid>
-                </li>
-              ))}
-            </ul>
-          </Paper>
-        </Grid>
+                  </li>
+                ))}
+              </ul>
+            </Paper>
+          </Grid>
+        )}
       </Grid>
     </Container>
   );

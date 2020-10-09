@@ -19,6 +19,7 @@ import Invite from "./components/Invite";
 import Project from "./components/Project";
 import Bug from "./components/Bug";
 import NewBug from "./components/NewBug";
+import NotFound from "./components/NotFound";
 
 if (localStorage.token) {
   setAuthToken(localStorage.token);
@@ -33,7 +34,7 @@ function App() {
     <ThemeProvider theme={theme}>
       <Navbar />
       <Switch>
-        <Route exact path="/" render={() => <Welcome />} />
+        <Route exact path="/" component={Welcome} />
         <Route
           exact
           path="/:projectName/:projectId/invite"
@@ -59,6 +60,7 @@ function App() {
           path="/:projectId/:bugId"
           render={(props) => <Bug {...props} />}
         />
+        <Route render={() => <NotFound />} />
       </Switch>
       <Alerts />
     </ThemeProvider>

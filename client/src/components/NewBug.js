@@ -19,6 +19,7 @@ import {
   NativeSelect,
   InputBase,
   withStyles,
+  FormHelperText,
 } from "@material-ui/core";
 
 const statusList = ["Open", "In progress"];
@@ -80,8 +81,8 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(3, 0, 2),
   },
   img: {
-    height: "4rem",
-    width: "4rem",
+    height: "5rem",
+    width: "5rem",
   },
   margin: {
     margin: theme.spacing(3),
@@ -98,19 +99,27 @@ const NewBug = ({
 }) => {
   useEffect(() => {
     getProjects();
-  }, []);
+  }, [getProjects]);
   const history = useHistory();
-  const [assignedTo, setAssignedTo] = useState("");
+  const [assignedTo, setAssignedTo] = useState(null);
+  const [error, setError] = useState(false);
   const [status, setStatus] = useState("Open");
   const classes = useStyles();
-  const { register, handleSubmit, errors, getValues, control } = useForm();
+  const { register, handleSubmit, errors } = useForm();
 
-  const handleChangeStatus = (e) => {
-    setStatus(e.target.value);
+  const handleClick = () => {
+    if (!assignedTo) {
+      setError(true);
+    }
   };
 
   const handleChangeTo = (e) => {
     setAssignedTo(e.target.value);
+    console.log(assignedTo);
+  };
+
+  const handleChangeStatus = (e) => {
+    setStatus(e.target.value);
   };
 
   const handleOnSubmit = (data) => {
@@ -123,8 +132,10 @@ const NewBug = ({
       assignedTo,
       projectName,
     };
-    console.log(payload);
-    addBug(payload, history, projectId);
+    // console.log(payload);
+    if (assignedTo) {
+      addBug(payload, history, projectId);
+    }
   };
   if (!teamMembers) {
     return <h1>Loading...</h1>;
@@ -134,7 +145,7 @@ const NewBug = ({
     <Container component="main" maxWidth="sm">
       <CssBaseline />
       <Paper elevation={3} className={classes.paper}>
-        <img className={classes.img} src={bugImage} />
+        <img className={classes.img} src={bugImage} alt="bug" />
         <Typography component="h1" variant="h5">
           New bug
         </Typography>
@@ -219,11 +230,12 @@ const NewBug = ({
               ))}
             </NativeSelect>
           </FormControl>
-          <FormControl fullWidth>
+          <FormControl fullWidth error={error}>
             <NativeSelect
+              required
               input={<BootstrapInput />}
               fullWidth
-              value={email}
+              // value={email}
               onChange={(e) => handleChangeTo(e)}
               placeholder="Assigned to"
             >
@@ -234,8 +246,10 @@ const NewBug = ({
                 </option>
               ))}
             </NativeSelect>
+            {error && <FormHelperText>Required!</FormHelperText>}
           </FormControl>
           <Button
+            onClick={handleClick}
             type="submit"
             fullWidth
             variant="contained"

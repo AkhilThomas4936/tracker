@@ -66,7 +66,7 @@ export const addTeam = (projectName, teamMembers, history, id) => async (
   const body = JSON.stringify({ projectName, teamMembers });
   try {
     await axios.put("http://localhost:5000/projects/invite", body, config);
-    dispatch(setAlert("Team added successfully", "success"));
+    dispatch(setAlert("Team members added successfully", "success"));
     history.push(`/${id}`);
   } catch (err) {}
 };
